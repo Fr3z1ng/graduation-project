@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<div class="container">
+    {% for services in service %}
+    <li> Название услуги: {{ services.name}}; Цена:{{services.cost}}</li><a href="{% url 'website:service_info' services.pk %}">link</a>
+    {% endfor %}
+</div>
+{% endblock %}
+{% include "footer.html" %}

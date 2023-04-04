@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1>{{ service.name }}</h1>
+    <p>{{ service.description }}</p>
+    <p>Цена: {{ service.cost }}</p>
+</div>
+{% endblock %}
+{% include "footer.html" %}
