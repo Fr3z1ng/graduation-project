@@ -1,10 +1,27 @@
 {% extends "base.html"%}
 {% load static %}
 {% block content %}
-  <div class="container">
+{% if user.is_authenticated %}
+<a href="{% url 'users:logout' %}">logout</a>
+{% endif %}
+{% if not profile %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>{{ form.first_name }}</p>
+    <p>{{ form.last_name }}</p>
+    <p><input type="file" name="profile_image"></p>
+    <p>{{ form.phone_number }}</p>
+    <button type="submit">Отправить</button>
+</form>
+{% endif %}
+<div class="container">
     <h1>{{ request.user.username }}'s Profile</h1>
-    <p>Email: {{ request.user.email }}</p>
-    <p>Name: {{ request.first_name }}</p>
-  </div>
+    {% for profiles in profile %}
+    <p>First_name: {{ profiles.first_name }}</p>
+    <p>Last_name: {{ profiles.last_name }}</p>
+    <p>Number: {{ profiles.phone_number }}</p>
+    <img src="{{ profiles.profile_image.url }}">
+    {% endfor %}
+</div>
 {% endblock %}
 {% include "footer.html" %}

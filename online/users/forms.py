@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, required=True, help_text='Required. Enter a valid email address.')
-    nickname = forms.CharField(max_length=30, required=True, help_text='Required.')
     password1 = forms.CharField(
         label='Password',
         widget=forms.PasswordInput,
@@ -23,7 +22,7 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = UserCreationForm.Meta.fields + (
-            'email', 'nickname', 'password1', 'password2',)
+            'email', 'password1', 'password2',)
 
 
 class LoginForm(forms.Form):
