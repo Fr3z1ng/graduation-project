@@ -231,18 +231,38 @@ def isWeekdayValid(x):
 def checkTime(times, day):
     # Only show the time of the day that has not been selected before:
     x = []
+    now = datetime.now()
+    time = now.time()
+    formatted_time = time.strftime('%H:%M')
     for k in times:
-        if Appointment.objects.filter(day=day, time=k).count() < 1:
-            x.append(k)
+        if k[0:5] > formatted_time and day == str(now.date()):
+            if Appointment.objects.filter(day=day, time=k).count() < 1:
+                x.append(k)
+        elif day != str(now.date()):
+            if Appointment.objects.filter(day=day, time=k).count() < 1:
+                x.append(k)
     return x
 
 
 def checkEditTime(times, day, id):
     # Only show the time of the day that has not been selected before:
     x = []
+    now = datetime.now()
+    time = now.time()
+    formatted_time = time.strftime('%H:%M')
     appointment = Appointment.objects.get(pk=id)
     time = appointment.time
     for k in times:
-        if Appointment.objects.filter(day=day, time=k).count() < 1 or time == k:
-            x.append(k)
+        if k[0:5] > formatted_time and day == str(now.date()):
+            if Appointment.objects.filter(day=day, time=k).count() < 1 or time == k:
+                x.append(k)
+        elif day != str(now.date()):
+            if Appointment.objects.filter(day=day, time=k).count() < 1 or time == k:
+                x.append(k)
     return x
+
+
+def remove(request, id):
+    appointment = Appointment.objects.get(pk=id)
+    appointment.delete()
+    return redirect(reverse('website:profile'))

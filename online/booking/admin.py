@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Appointment, History
+from .models import Appointment, HistoryBooking
 
 
 class AppointmentAdmin(admin.ModelAdmin):
@@ -9,8 +9,8 @@ class AppointmentAdmin(admin.ModelAdmin):
 admin.site.register(Appointment, AppointmentAdmin)
 
 
-class HistoryAdmin(admin.ModelAdmin):
+class HistoryBookingAdmin(admin.ModelAdmin):
     list_display = ['user', 'service']
 
 
-admin.site.register(History, HistoryAdmin)
+admin.site.register(HistoryBooking, HistoryBookingAdmin)

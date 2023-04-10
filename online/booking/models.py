@@ -35,5 +35,13 @@ class Appointment(models.Model):
         return f"{self.user} | day: {self.day} | time: {self.time} | {self.service}"
 
 
-class History(Appointment):
+class HistoryBooking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
+    day = models.DateField(default=datetime.now)
+    time = models.CharField(max_length=10, choices=TIME_CHOICES, default="3 PM")
+    time_ordered = models.DateTimeField(default=datetime.now, blank=True)
     created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} | day: {self.day} | time: {self.time} | {self.service}"

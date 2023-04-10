@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
-from booking.models import Appointment
+from booking.models import Appointment, HistoryBooking
 from .models import Service, Profile
 from .forms import ProfileModelForm
 from django.urls import reverse
 from .models import Profile
 from datetime import datetime
+from django.utils import timezone
+import pytz
 
 
 def index(request: HttpRequest):
@@ -37,11 +39,17 @@ def profile(request: HttpRequest):
     now = datetime.now()
     appointments = Appointment.objects.filter(user=request.user)
     appointments_time = Appointment.objects.filter(day=now.date(), time__lt=now.time())
-    appointments_day = Appointment.objects.filter(day__lt=now.date(), time__lt=now.time())
     some_list = []
-    if appointments_time or appointments_day != some_list:
+    if appointments_time != some_list:
+        for appointment in appointments_time:
+            history = HistoryBooking()
+            history.user = appointment.user
+            history.service = appointment.service
+            history.day = appointment.day
+            history.time = appointment.time
+            history.time_ordered = appointment.time_ordered
+            history.save()
         appointments_time.delete()
-        appointments_day.delete()
     return render(request, "profile.html", context={'profile': profile_all, 'form': form, 'appointments': appointments})
 
 
