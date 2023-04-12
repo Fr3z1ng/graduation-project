@@ -5,6 +5,7 @@
     <h1>{{ service.name }}</h1>
     <p>{{ service.description }}</p>
     <p>Цена: {{ service.cost }}</p>
+    <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:booking_day' service.id%}">Add Appointment</a>
 </div>
 {% endblock %}
 {% include "footer.html" %}

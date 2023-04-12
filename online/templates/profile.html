@@ -1,9 +1,6 @@
 {% extends "base.html"%}
 {% load static %}
 {% block content %}
-{% if user.is_authenticated %}
-<a href="{% url 'users:logout' %}">logout</a>
-{% endif %}
 <a href="{% url 'booking:booking' %}">Booking</a>
 {% if appointments.count > 0 %}
 <div class="mt-5 ">

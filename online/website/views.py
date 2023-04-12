@@ -37,9 +37,10 @@ def profile(request: HttpRequest):
     else:
         form = ProfileModelForm()
     now = datetime.now()
-    appointments = Appointment.objects.filter(user=request.user)
-    appointments_time = Appointment.objects.filter(day=now.date(), time__lt=now.time())
     some_list = []
+    appointments = Appointment.objects.filter(user=request.user)
+    appointments_day = Appointment.objects.filter(day__lt=now.date())
+    appointments_time = Appointment.objects.filter(day=now.date(), time__lt=now.time())
     if appointments_time != some_list:
         for appointment in appointments_time:
             history = HistoryBooking()
@@ -50,6 +51,16 @@ def profile(request: HttpRequest):
             history.time_ordered = appointment.time_ordered
             history.save()
         appointments_time.delete()
+    if appointments_day != some_list:
+        for appointment in appointments_day:
+            history = HistoryBooking()
+            history.user = appointment.user
+            history.service = appointment.service
+            history.day = appointment.day
+            history.time = appointment.time
+            history.time_ordered = appointment.time_ordered
+            history.save()
+        appointments_day.delete()
     return render(request, "profile.html", context={'profile': profile_all, 'form': form, 'appointments': appointments})
 
 

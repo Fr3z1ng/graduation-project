@@ -11,23 +11,34 @@ locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 def booking(request):
     services = Service.objects.all()
-    weekdays = validWeekday(31)
-    validate_weekdays = isWeekdayValid(weekdays)
     if request.method == 'POST':
         service = request.POST.get('service')
-        day = request.POST.get('day')
-        if service == None:
+        if service is None:
             messages.success(request, "Please Select A Service!")
-            return redirect('booking')
+            return redirect(reverse('booking:booking'))
         request.session['service'] = service  # присвоение значения service в сессию
-        request.session['day'] = day  # присвоение значения day в сессию
-        print(day)
-        return redirect(reverse('booking:bookingSubmit'))
+        return redirect(reverse('booking:booking_day'))
 
     return render(request, 'booking.html', {
+
+        'services': services
+    })
+
+
+def booking_day(request, service_id=None):
+    weekdays = validWeekday(31)
+    validate_weekdays = isWeekdayValid(weekdays)
+    if service_id is not None:
+        service = Service.objects.get(id=service_id)
+        request.session['service'] = service.name
+    if request.method == 'POST':
+        day = request.POST.get('day')
+        request.session['day'] = day  # присвоение значения day в сессию
+        return redirect(reverse('booking:bookingSubmit'))
+
+    return render(request, 'booking_day.html', {
         'weekdays': weekdays,
         'validateWeekdays': validate_weekdays,
-        'services': services
     })
 
 
@@ -60,7 +71,7 @@ def bookingSubmit(request):
                 if date in ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']:
                     if Appointment.objects.filter(day=day).count() < 11:
                         if Appointment.objects.filter(day=day, time=time).count() < 1:
-                            AppointmentForm = Appointment.objects.get_or_create(
+                            Appointment.objects.get_or_create(
                                 user=request.user,
                                 service=service,
                                 day=day,
@@ -81,15 +92,6 @@ def bookingSubmit(request):
 
     return render(request, 'bookingSubmit.html', {
         'times': hour,
-    })
-
-
-def userPanel(request):
-    user = request.user
-    appointments = Appointment.objects.filter(user=user).order_by('day', 'time')
-    return render(request, 'userPanel.html', {
-        'user': user,
-        'appointments': appointments,
     })
 
 

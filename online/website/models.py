@@ -6,6 +6,12 @@ class Service(models.Model):
     name = models.CharField(max_length=50, verbose_name='Service name')
     description = models.TextField(max_length=1000, verbose_name='Service description')
     cost = models.IntegerField()
+    service_image = models.ImageField(
+        upload_to="service_image", blank=True, null=True, verbose_name="Service Image"
+    )
+    pros = models.TextField(max_length=1000, verbose_name='Service plus description')
+    minuses = models.TextField(max_length=1000, verbose_name='Service minus description')
+    short_description = models.TextField(max_length=250, verbose_name='Service short description')
 
     def __str__(self):
         return self.name

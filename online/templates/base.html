@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+    {% block mainmenu %}
+                <a href="{% url 'website:index' %}">Главная</a>
+				{% if request.user.is_authenticated %}
+				<li class="last"> <a href="{% url 'website:profile' %}">{{user.username}} </a> | <a href="{% url 'users:logout' %}">Выйти</a></li>
+				{% else %}
+				<li class="last"><a href="{% url 'users:register' %}">Регистрация</a> | <a href="{% url 'users:login' %}">Войти</a></li>
+				{% endif %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
     {% block stylesheets %}
     {% endblock %}
 </head>
 <body>
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
 
     <footer>
