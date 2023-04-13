@@ -2,7 +2,7 @@ from django import forms
 from django.forms import Textarea
 from django.views.generic.edit import FormView
 
-from .models import Profile
+from .models import Profile, CommentWebsite
 
 
 class ProfileModelForm(forms.ModelForm):
@@ -24,3 +24,30 @@ class ProfileModelForm(forms.ModelForm):
             'last_name': 'Фамилия',
             'number_phone': 'Мобильный номер',
         }
+
+
+class CommentModelForm(forms.ModelForm):
+    """
+    Форма для ввода и редактирования комментария
+    """
+
+    def clean_rating(self):
+        rating = self.cleaned_data["rating"]
+        if rating < 0 or rating > 10:
+            raise forms.ValidationError("Only possitive number and less 11 are allowed")
+        return rating
+
+    class Meta:
+        model = CommentWebsite
+        exclude = [
+            "pub_date",
+            "update_date",
+            "user",
+        ]
+        widgets = ({"text": Textarea(attrs={"cols": 80, "rows": 20})},)
+        labels = (
+            {
+                "text": "Comment text",
+            },
+        )
+        help_texts = {"text": "Please,rate this game"}

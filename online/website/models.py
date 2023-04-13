@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 
 class Service(models.Model):
     name = models.CharField(max_length=50, verbose_name='Service name')
@@ -30,3 +30,21 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+class CommentWebsite(models.Model):
+    text = models.CharField(max_length=250, verbose_name="Comment text")
+    pub_date = models.DateField(
+        verbose_name="Comment publication date", auto_now=True
+    )
+    rating = models.IntegerField(verbose_name="Rating comment")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True
+    )  # добавил поле user
+    update_date = models.DateField(
+        verbose_name="Comment update date", auto_now=True
+    )
+
+    def get_absolute_url(self):
+        # Возвращает URL для перенаправления после успешной обработки формы
+        return reverse('website:comment')

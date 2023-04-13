@@ -265,6 +265,13 @@ def checkEditTime(times, day, id):
 
 
 def remove(request, id):
+
     appointment = Appointment.objects.get(pk=id)
-    appointment.delete()
-    return redirect(reverse('website:profile'))
+    userdatepicked = appointment.day
+    today = datetime.today()
+    delta24 = (userdatepicked).strftime('%Y-%m-%d') >= (today + timedelta(days=1)).strftime('%Y-%m-%d')
+    if delta24 is True:
+        appointment.delete()
+        return redirect(reverse('website:profile'))
+    else:
+        return render(request, 'Falsedelete.html')

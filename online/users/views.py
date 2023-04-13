@@ -6,7 +6,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .token import account_activation_token
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import CustomUserCreationForm, LoginForm, CustomPasswordChangeForm
 from django.core.mail import send_mail
 
 
@@ -84,3 +84,17 @@ def logout_view(request):
     """
     logout(request)
     return redirect("website:index")
+
+
+def password_change(request):
+    if request.method == "POST":
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return render(
+                request, "users/password_change_success.html"
+            )
+    else:
+        current_user = request.user
+        form = CustomPasswordChangeForm(current_user)
+    return render(request, "users/password_change.html", {"form": form})

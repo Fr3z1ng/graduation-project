@@ -42,7 +42,7 @@
 
 <div class="shadow p-4 mb-5 bg-body bg-body rounded text-black m-5 text-center fPersian">
     <h1 class="text-danger">Editing Appointments Its Only Available 24hrs Before Appointment!</h1>
-    <a href="{% url 'booking:userPanel' %}" class="btn btn-primary mt-5">Return To User Panel</a>
+    <a href="{% url 'website:profile' %}" class="btn btn-primary mt-5">Return To Profile</a>
 </div>
 
 {% endif %}
@@ -50,10 +50,6 @@
 
 {% else %}
 
-<div class="shadow p-4 mb-5 bg-body bg-body rounded text-black  m-5 ">
-    <h1 class="p-2  me-3">You Are Not Signed in!</h1>
-    <a href="{% url 'users:register' %}" class="btn btn-primary shadow text-center">Sign in</a>
-</div>
 
 {% endif %}
 

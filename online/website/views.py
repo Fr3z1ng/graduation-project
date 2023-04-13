@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from booking.models import Appointment, HistoryBooking
-from .models import Service, Profile
-from .forms import ProfileModelForm
-from django.urls import reverse
+from .models import Service, Profile, CommentWebsite
+from .forms import ProfileModelForm, CommentModelForm
+from django.urls import reverse, reverse_lazy
 from .models import Profile
-from datetime import datetime
-from django.utils import timezone
-import pytz
+from datetime import datetime, timedelta
 
 
 def index(request: HttpRequest):
@@ -18,10 +16,7 @@ def index(request: HttpRequest):
     return render(request, "main.html")
 
 
-def profile(request: HttpRequest):
-    """
-    Представление для всех категорий
-    """
+def profile(request):
     profile_all = Profile.objects.filter(user=request.user.id)
     prof = Profile()
     if request.method == 'POST':
@@ -78,3 +73,45 @@ def service_info(request, pk):
     """
     service = Service.objects.get(pk=pk)
     return render(request, "service_info.html", context={'service': service})
+
+
+def comments(request):
+    """
+    Представление для конкретной услуги
+    """
+    comment_user = CommentWebsite.objects.filter(user=request.user)
+    print(comment_user)
+    comment_another_users = CommentWebsite.objects.exclude(user=request.user)
+    print(comment_another_users)
+    if request.method == 'POST':
+        comment_form = CommentModelForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.save()
+    else:
+        comment_form = CommentModelForm()
+    return render(request, "website/comment.html",
+                  context={'comment_user': comment_user, 'comment_another_users': comment_another_users,
+                           'form': comment_form})
+
+
+class CommentCreateView(CreateView):
+    model = CommentWebsite
+    form_class = CommentModelForm
+
+
+class CommentUpdateView(UpdateView):
+    model = CommentWebsite
+    form_class = CommentModelForm  # добавил валидацию для редактирования комментария
+    context_object_name = 'comment'
+    template_name_suffix = '_update'
+
+
+class CommentDeleteView(DeleteView):
+    model = CommentWebsite
+    success_url = reverse_lazy(
+        "website:comment"
+    )
+    context_object_name = 'comment'
+    template_name_suffix = '_delete'
