@@ -8,5 +8,5 @@
   <input type="submit" value="Login">
  <input type="hidden" name="next" value="{{ request.GET.next }}"/>
 </form>
-
+<a href="{%url 'users:password_reset' %}">Забыли пароль?</a>
 <a href="{%url 'website:index' %}">Back to shop</a>
