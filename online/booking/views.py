@@ -19,7 +19,7 @@ def booking(request):
         request.session['service'] = service  # присвоение значения service в сессию
         return redirect(reverse('booking:booking_day'))
 
-    return render(request, 'booking.html', {
+    return render(request, 'booking/booking.html', {
 
         'services': services
     })
@@ -36,7 +36,7 @@ def booking_day(request, service_id=None):
         request.session['day'] = day  # присвоение значения day в сессию
         return redirect(reverse('booking:bookingSubmit'))
 
-    return render(request, 'booking_day.html', {
+    return render(request, 'booking/booking_day.html', {
         'weekdays': weekdays,
         'validateWeekdays': validate_weekdays,
     })
@@ -90,7 +90,7 @@ def bookingSubmit(request):
         else:
             messages.success(request, "Please Select A Service!")
 
-    return render(request, 'bookingSubmit.html', {
+    return render(request, 'booking/bookingSubmit.html', {
         'times': hour,
     })
 
@@ -121,7 +121,7 @@ def userUpdate(request, id):
 
         return redirect(reverse('booking:userUpdateSubmit', args=[id]))
 
-    return render(request, 'userUpdate.html', {
+    return render(request, 'booking/userUpdate.html', {
         'weekdays': weekdays,
         'validateWeekdays': validateWeekdays,
         'delta24': delta24,
@@ -185,23 +185,9 @@ def userUpdateSubmit(request, id):
             messages.success(request, "Please Select A Service!")
         return redirect('userPanel')
 
-    return render(request, 'userUpdateSubmit.html', {
+    return render(request, 'booking/userUpdateSubmit.html', {
         'times': hour,
         'id': id,
-    })
-
-
-def staffPanel(request):
-    today = datetime.today()
-    minDate = today.strftime('%Y-%m-%d')
-    deltatime = today + timedelta(days=31)
-    strdeltatime = deltatime.strftime('%Y-%m-%d')
-    maxDate = strdeltatime
-    # Only show the Appointments 21 days from today
-    items = Appointment.objects.filter(day__range=[minDate, maxDate]).order_by('day', 'time')
-
-    return render(request, 'staffPanel.html', {
-        'items': items,
     })
 
 
@@ -265,7 +251,6 @@ def checkEditTime(times, day, id):
 
 
 def remove(request, id):
-
     appointment = Appointment.objects.get(pk=id)
     userdatepicked = appointment.day
     today = datetime.today()
@@ -274,4 +259,4 @@ def remove(request, id):
         appointment.delete()
         return redirect(reverse('website:profile'))
     else:
-        return render(request, 'Falsedelete.html')
+        return render(request, 'booking/Falsedelete.html')
