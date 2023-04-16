@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from booking.models import Appointment, HistoryBooking
@@ -6,8 +7,9 @@ from .models import Service, Profile, CommentWebsite
 from .forms import ProfileModelForm, CommentModelForm
 from django.urls import reverse, reverse_lazy
 from .models import Profile
-from datetime import datetime, timedelta
-
+from datetime import datetime
+from django.core import serializers
+from .tasks import replace_text_with_censored
 
 def index(request: HttpRequest):
     """
@@ -16,6 +18,7 @@ def index(request: HttpRequest):
     return render(request, "main.html")
 
 
+@login_required(login_url="users:login")
 def profile(request):
     profile_all = Profile.objects.filter(user=request.user.id)
     prof = Profile()
@@ -80,15 +83,14 @@ def comments(request):
     Представление для конкретной услуги
     """
     comment_user = CommentWebsite.objects.filter(user=request.user)
-    print(comment_user)
     comment_another_users = CommentWebsite.objects.exclude(user=request.user)
-    print(comment_another_users)
     if request.method == 'POST':
         comment_form = CommentModelForm(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.user = request.user
             new_comment.save()
+            replace_text_with_censored.delay(new_comment.id)
     else:
         comment_form = CommentModelForm()
     return render(request, "website/comment.html",

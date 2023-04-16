@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+
 class Service(models.Model):
     name = models.CharField(max_length=50, verbose_name='Service name')
     description = models.TextField(max_length=1000, verbose_name='Service description')
@@ -12,6 +13,7 @@ class Service(models.Model):
     pros = models.TextField(max_length=1000, verbose_name='Service plus description')
     minuses = models.TextField(max_length=1000, verbose_name='Service minus description')
     short_description = models.TextField(max_length=250, verbose_name='Service short description')
+    time = models.CharField(max_length=40, verbose_name="Time service",default="15 минут")
 
     def __str__(self):
         return self.name
@@ -45,6 +47,17 @@ class CommentWebsite(models.Model):
         verbose_name="Comment update date", auto_now=True
     )
 
-    def get_absolute_url(self):
+    @staticmethod
+    def get_absolute_url():
         # Возвращает URL для перенаправления после успешной обработки формы
         return reverse('website:comment')
+
+
+class PhotoGallery(models.Model):
+    photo_gallery = models.ImageField(
+        upload_to="profile", blank=True, null=True, verbose_name="Photo gallery Image"
+    )
+    short_description = models.TextField(max_length=250, verbose_name='Service short description')
+
+    def __str__(self):
+        return self.short_description
