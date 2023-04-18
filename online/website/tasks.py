@@ -3,9 +3,6 @@ from profanityfilter import ProfanityFilter
 from celery import shared_task
 
 from website.models import CommentWebsite
-from dotenv import load_dotenv
-
-load_dotenv()
 
 pf = ProfanityFilter()
 

@@ -20,4 +20,5 @@ urlpatterns = [
         views.CommentDeleteView.as_view(),
         name="comment-delete",
     ),
+    path("gallery", views.gallery, name="photo-gallery"),
 ]

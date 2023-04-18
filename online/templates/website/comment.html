@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<div class="container">
+{% if user.is_authenticated %}
+    {% for comment in comment_user %}
+    <li> Комментарий: {{ comment.text}}; Рейтинг:{{comment.rating}}</li> <a href="{% url 'website:comment-update' pk=comment.pk %}">Update comment</a> <a href="{% url 'website:comment-delete' pk=comment.pk %}">Delete comment</a></p>
+    {% endfor %}
+    {% for comments in comment_another_users %}
+    <li> Комментарий: {{ comments.text}}; Рейтинг:{{comments.rating}}</li>
+    {% endfor %}
+
+    <form action="" method="post" >
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Submit" />
+</form>
+    {% else %}
+    {% for comments in comment_another_users %}
+    <li> Комментарий: {{ comments.text}}; Рейтинг:{{comments.rating}}</li>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% include "footer.html" %}

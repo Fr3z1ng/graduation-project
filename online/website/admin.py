@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Service, Profile, CommentWebsite
+from .models import Service, Profile, CommentWebsite, PhotoGallery
 
 
 @admin.register(Service)
@@ -15,3 +15,8 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(CommentWebsite)
 class CommentWebsiteAdmin(admin.ModelAdmin):
     list_display = ["user", "text", 'pub_date', 'update_date']
+
+
+@admin.register(PhotoGallery)
+class PhotoGalleryAdmin(admin.ModelAdmin):
+    list_display = ['photo_gallery', 'short_description']

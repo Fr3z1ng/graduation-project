@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from booking.models import Appointment, HistoryBooking
-from .models import Service, Profile, CommentWebsite
+from .models import Service, Profile, CommentWebsite, PhotoGallery
 from .forms import ProfileModelForm, CommentModelForm
 from django.urls import reverse, reverse_lazy
 from .models import Profile
 from datetime import datetime
 from django.core import serializers
 from .tasks import replace_text_with_censored
+
 
 def index(request: HttpRequest):
     """
@@ -117,3 +118,11 @@ class CommentDeleteView(DeleteView):
     )
     context_object_name = 'comment'
     template_name_suffix = '_delete'
+
+
+def gallery(request):
+    """
+    Представление для конкретной услуги
+    """
+    photo = PhotoGallery.objects.all()
+    return render(request, "Photogallery.html", context={'photo': photo})
