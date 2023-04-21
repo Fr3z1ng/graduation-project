@@ -50,4 +50,4 @@ class CommentModelForm(forms.ModelForm):
                 "text": "Comment text",
             },
         )
-        help_texts = {"text": "Please,rate this game"}
+        help_texts = {"text": "Оцените нас,пожалуйста "}

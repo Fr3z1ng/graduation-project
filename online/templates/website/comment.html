@@ -9,10 +9,10 @@
     {% for comments in comment_another_users %}
     <li> Комментарий: {{ comments.text}}; Рейтинг:{{comments.rating}}</li>
     {% endfor %}
-
     <form action="" method="post" >
     {% csrf_token %}
-    {{form}}
+    <p>Введите ваш комментарий: {{form.text}}</p>
+        <p>Оцените мастера: {{form.rating}} </p>
     <input type="submit" value="Submit" />
 </form>
     {% else %}

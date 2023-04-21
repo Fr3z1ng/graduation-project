@@ -10,17 +10,20 @@ from .models import Profile
 from datetime import datetime
 from django.core import serializers
 from .tasks import replace_text_with_censored
+from django.db.models import Q
 
 
 def index(request: HttpRequest):
     """
     Представление для всех категорий
     """
-    return render(request, "main.html")
+    service = Service.objects.all()
+    return render(request, "base.html", context={'service': service})
 
 
 @login_required(login_url="users:login")
 def profile(request):
+    service = Service.objects.all()
     profile_all = Profile.objects.filter(user=request.user.id)
     prof = Profile()
     if request.method == 'POST':
@@ -36,31 +39,17 @@ def profile(request):
     else:
         form = ProfileModelForm()
     now = datetime.now()
-    some_list = []
     appointments = Appointment.objects.filter(user=request.user)
-    appointments_day = Appointment.objects.filter(day__lt=now.date())
-    appointments_time = Appointment.objects.filter(day=now.date(), time__lt=now.time())
-    if appointments_time != some_list:
-        for appointment in appointments_time:
-            history = HistoryBooking()
-            history.user = appointment.user
-            history.service = appointment.service
-            history.day = appointment.day
-            history.time = appointment.time
-            history.time_ordered = appointment.time_ordered
+    appointments_expired = Appointment.objects.filter(Q(day__lt=now.date()) | Q(day=now.date(), time__lt=now.time()))
+
+    if appointments_expired:
+        for appointment in appointments_expired:
+            history = HistoryBooking(user=appointment.user, service=appointment.service, day=appointment.day,
+                                     time=appointment.time, time_ordered=appointment.time_ordered)
             history.save()
-        appointments_time.delete()
-    if appointments_day != some_list:
-        for appointment in appointments_day:
-            history = HistoryBooking()
-            history.user = appointment.user
-            history.service = appointment.service
-            history.day = appointment.day
-            history.time = appointment.time
-            history.time_ordered = appointment.time_ordered
-            history.save()
-        appointments_day.delete()
-    return render(request, "profile.html", context={'profile': profile_all, 'form': form, 'appointments': appointments})
+        appointments_expired.delete()
+    return render(request, "profile.html",
+                  context={'profile': profile_all, 'form': form, 'appointments': appointments, 'service': service})
 
 
 def service_view(request: HttpRequest):
@@ -83,19 +72,25 @@ def comments(request):
     """
     Представление для конкретной услуги
     """
+    service = Service.objects.all()
     comment_user = CommentWebsite.objects.filter(user=request.user)
     comment_another_users = CommentWebsite.objects.exclude(user=request.user)
     if request.method == 'POST':
         comment_form = CommentModelForm(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
-            new_comment.user = request.user
+            if request.user.is_authenticated:
+                new_comment.user = request.user
+            else:
+                new_comment.user = None
+                return redirect(reverse('users:login'))
             new_comment.save()
             replace_text_with_censored.delay(new_comment.id)
     else:
         comment_form = CommentModelForm()
     return render(request, "website/comment.html",
                   context={'comment_user': comment_user, 'comment_another_users': comment_another_users,
+                           'service': service,
                            'form': comment_form})
 
 
@@ -124,5 +119,6 @@ def gallery(request):
     """
     Представление для конкретной услуги
     """
+    service = Service.objects.all()
     photo = PhotoGallery.objects.all()
-    return render(request, "Photogallery.html", context={'photo': photo})
+    return render(request, "Photogallery.html", context={'photo': photo, 'service': service})

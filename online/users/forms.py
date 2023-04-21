@@ -24,6 +24,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = UserCreationForm.Meta.fields + (
             'email', 'password1', 'password2',)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise ValidationError('This email address is already in use.')
+        return email
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()

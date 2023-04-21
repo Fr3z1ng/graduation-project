@@ -61,3 +61,13 @@ class PhotoGallery(models.Model):
 
     def __str__(self):
         return self.short_description
+
+
+class StockShares(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Stock shares name')
+    description = models.TextField(max_length=1000, verbose_name='Service description')
+    cost = models.IntegerField()
+    service_image = models.ImageField(
+        upload_to="stock_shares_image", blank=True, null=True, verbose_name="Stock shares Image"
+    )
+    short_description = models.TextField(max_length=250, verbose_name='Service short description')

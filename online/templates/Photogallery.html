@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<p>Наша фотогалерея</p>
+{% for gallery in photo %}
+<img src="{{ gallery.photo_gallery.url }}">
+{{gallery.short_description}}
+{% endfor %}
+{% endblock %}
+{% include "footer.html" %}

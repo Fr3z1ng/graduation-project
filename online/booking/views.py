@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.urls import reverse
 import locale
+from django.db.models import Q
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
@@ -55,20 +56,18 @@ def bookingSubmit(request):
         "18.00 PM",
     ]
     today = datetime.now()
-    minDate = today.strftime('%Y-%m-%d')  # выбор даты с которой можно записаться
+    mindate = today.strftime('%Y-%m-%d')  # выбор даты с которой можно записаться
     deltatime = today + timedelta(days=31)  # кол-во дней на которые можно записываться
     strdeltatime = deltatime.strftime('%Y-%m-%d')
-    maxDate = strdeltatime  # самая дальняя запись
+    maxdate = strdeltatime  # самая дальняя запись
     day = request.session.get('day')
     service_name = request.session.get('service')
     service = Service.objects.get(name=service_name) if service_name else None
     hour = checkTime(times, day)  # проверка забронировано ли время другим пользователем в этот день
     if request.method == 'POST':
         time = request.POST.get("time")  # получение времени
-        date = dayToWeekday(day)  # получение дня недели
         if service != None:
-            if day <= maxDate and day >= minDate:
-                if date in ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']:
+            if day <= maxdate and day >= mindate:
                     if Appointment.objects.filter(day=day).count() < 11:
                         if Appointment.objects.filter(day=day, time=time).count() < 1:
                             Appointment.objects.get_or_create(
@@ -79,17 +78,6 @@ def bookingSubmit(request):
                             )
                             messages.success(request, "Appointment already exists!")
                             return redirect('website:index')
-                        else:
-                            messages.success(request, "The Selected Time Has Been Reserved Before!")
-                    else:
-                        messages.success(request, "The Selected Day Is Full!")
-                else:
-                    messages.success(request, "The Selected Date Is Incorrect")
-            else:
-                messages.success(request, "The Selected Date Isn't In The Correct Time Period!")
-        else:
-            messages.success(request, "Please Select A Service!")
-
     return render(request, 'booking/bookingSubmit.html', {
         'times': hour,
     })
@@ -155,36 +143,21 @@ def userUpdateSubmit(request, id):
     # Only show the time of the day that has not been selected before and the time he is editing:
     hour = checkEditTime(times, day, id)
     appointment = Appointment.objects.get(pk=id)
-    userSelectedTime = appointment.time
+    userselectedtime = appointment.time
     if request.method == 'POST':
         time = request.POST.get("time")
-        date = dayToWeekday(day)
-
         if service != None:
             if day <= maxDate and day >= minDate:
-                if date in ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']:
                     if Appointment.objects.filter(day=day).count() < 11:
-                        if Appointment.objects.filter(day=day, time=time).count() < 1 or userSelectedTime == time:
-                            AppointmentForm = Appointment.objects.filter(pk=id).update(
+                        if Appointment.objects.filter(day=day, time=time).count() < 1 or userselectedtime == time:
+                            Appointment.objects.filter(pk=id).update(
                                 user=request.user,
                                 service=service,
                                 day=day,
                                 time=time,
                             )
                             messages.success(request, "Appointment Edited!")
-                            return redirect('website:index')
-                        else:
-                            messages.success(request, "The Selected Time Has Been Reserved Before!")
-                    else:
-                        messages.success(request, "The Selected Day Is Full!")
-                else:
-                    messages.success(request, "The Selected Date Is Incorrect")
-            else:
-                messages.success(request, "The Selected Date Isn't In The Correct Time Period!")
-        else:
-            messages.success(request, "Please Select A Service!")
-        return redirect('userPanel')
-
+                            return redirect('booking:user_record')
     return render(request, 'booking/userUpdateSubmit.html', {
         'times': hour,
         'id': id,
@@ -200,11 +173,15 @@ def dayToWeekday(x):
 def validWeekday(days):
     today = datetime.now()  # получение текущей даты
     weekdays = []  # пустой список для хранения для недели
+    booking_settings = BookingSettings.objects.all()
     for i in range(0, days):
         x = today + timedelta(days=i)
-        y = x.strftime('%A')
-        if y in ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']:
-            weekdays.append(x.strftime('%Y-%m-%d'))  # если удовлетворяет условие добавляем этот день в список
+        for setting in booking_settings:
+            x = today + timedelta(days=i)
+            start_time = datetime.combine(setting.start_time, time.min)
+            end_time = datetime.combine(setting.end_time, time.max)
+            if start_time <= x <= end_time:
+                weekdays.append(x.strftime('%Y-%m-%d'))  # если удовлетворяет условие добавляем этот день в список
     return weekdays
 
 
@@ -260,3 +237,19 @@ def remove(request, id):
         return redirect(reverse('website:profile'))
     else:
         return render(request, 'booking/Falsedelete.html')
+
+
+def record_view(request):
+    service = Service.objects.all()
+    now = datetime.now()
+    appointments = Appointment.objects.filter(user=request.user)
+    appointments_expired = Appointment.objects.filter(Q(day__lt=now.date()) | Q(day=now.date(), time__lt=now.time()))
+
+    if appointments_expired:
+        for appointment in appointments_expired:
+            history = HistoryBooking(user=appointment.user, service=appointment.service, day=appointment.day,
+                                     time=appointment.time, time_ordered=appointment.time_ordered)
+            history.save()
+        appointments_expired.delete()
+    return render(request, "booking/user_record.html",
+                  context={'appointments': appointments, 'service': service})
