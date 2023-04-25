@@ -35,7 +35,7 @@ class Profile(models.Model):
 
 
 class CommentWebsite(models.Model):
-    text = models.CharField(max_length=250, verbose_name="Comment text")
+    text = models.TextField(max_length=250, verbose_name="Comment text")
     pub_date = models.DateField(
         verbose_name="Comment publication date", auto_now=True
     )

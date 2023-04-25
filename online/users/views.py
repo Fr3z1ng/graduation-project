@@ -12,6 +12,7 @@ from .forms import CustomUserCreationForm, LoginForm, CustomPasswordChangeForm
 from django.core.mail import send_mail
 from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetView
 from dotenv import load_dotenv
+from .tasks import register_message
 
 load_dotenv()
 
@@ -26,21 +27,14 @@ def register(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            mail_subject = 'Activation link has been sent to your email id'
             message = render_to_string('activate_email.html', {
                 'user': user,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
             to_email = form.cleaned_data.get('email')
-            send_mail(
-                mail_subject,
-                message,
-                os.environ.get('EMAIL_HOST_USER'),
-                [to_email],
-                fail_silently=False,
-            )
-            return HttpResponse('Please confirm your email address to complete the registration')
+            register_message.delay(message, to_email)
+            return render(request, "users/confirm_email.html")
     else:
         form = CustomUserCreationForm()
     return render(request, "users/register.html", {"form": form})
@@ -56,9 +50,9 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return redirect(reverse('website:profile'))
     else:
-        return HttpResponse('Activation link is invalid!')
+        return render(request, "users/false_email_token.html")
 
 
 def login_view(request):
@@ -75,9 +69,9 @@ def login_view(request):
                     login(request, user)
                     return redirect(reverse('website:index'))
                 else:
-                    return HttpResponse("Disabled account")
+                    return render(request, "users/disabled_acc.html")
             else:
-                return HttpResponse("Invalid login")
+                return render(request, "users/invalid_login.html")
     else:
         form = LoginForm()
     return render(request, "users/login.html", {"form": form})

@@ -1,5 +1,4 @@
 import os
-
 from celery import shared_task
 from django.core.mail import send_mail
 from datetime import datetime
@@ -22,3 +21,12 @@ def check_appointments():
         # Вызываем функцию для отправки уведомления о визите
         send_mail('Напоминание о посещение', message, os.environ.get('EMAIL_HOST_USER'), [appointment.user.email],
                   fail_silently=False)
+
+
+@shared_task()
+def notifacation_record(appoint_id):
+    appointment = Appointment.objects.get(pk=appoint_id)
+    message = f"Пользователь {appointment.user} записался на {appointment.service} в такой день {appointment.day} в такое время {appointment.time}"
+    send_mail('К вам записались', message, os.environ.get('EMAIL_HOST_USER'),
+              [appointment.user.email],
+              fail_silently=False)

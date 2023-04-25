@@ -38,18 +38,8 @@ def profile(request):
             return render(request, 'profile.html')
     else:
         form = ProfileModelForm()
-    now = datetime.now()
-    appointments = Appointment.objects.filter(user=request.user)
-    appointments_expired = Appointment.objects.filter(Q(day__lt=now.date()) | Q(day=now.date(), time__lt=now.time()))
-
-    if appointments_expired:
-        for appointment in appointments_expired:
-            history = HistoryBooking(user=appointment.user, service=appointment.service, day=appointment.day,
-                                     time=appointment.time, time_ordered=appointment.time_ordered)
-            history.save()
-        appointments_expired.delete()
     return render(request, "profile.html",
-                  context={'profile': profile_all, 'form': form, 'appointments': appointments, 'service': service})
+                  context={'profile': profile_all, 'form': form, 'service': service})
 
 
 def service_view(request: HttpRequest):

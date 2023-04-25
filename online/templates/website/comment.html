@@ -1,25 +1,82 @@
 {% extends "base.html"%}
 {% load static %}
 {% block content %}
-<div class="container">
 {% if user.is_authenticated %}
-    {% for comment in comment_user %}
-    <li> Комментарий: {{ comment.text}}; Рейтинг:{{comment.rating}}</li> <a href="{% url 'website:comment-update' pk=comment.pk %}">Update comment</a> <a href="{% url 'website:comment-delete' pk=comment.pk %}">Delete comment</a></p>
-    {% endfor %}
-    {% for comments in comment_another_users %}
-    <li> Комментарий: {{ comments.text}}; Рейтинг:{{comments.rating}}</li>
-    {% endfor %}
-    <form action="" method="post" >
-    {% csrf_token %}
-    <p>Введите ваш комментарий: {{form.text}}</p>
-        <p>Оцените мастера: {{form.rating}} </p>
-    <input type="submit" value="Submit" />
-</form>
-    {% else %}
-    {% for comments in comment_another_users %}
-    <li> Комментарий: {{ comments.text}}; Рейтинг:{{comments.rating}}</li>
-    {% endfor %}
+<div class="container reviews">
+    <div class="row">
+        <div class="col text-center text-uppercase">
+            <div class="title">
+                <h2>Отзывы</h2>
+            </div>
+        </div>
+    </div>
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {% if comment_user %}
+            <div class="carousel-item active">
+                <div class="row justify-content-center">
+                    {% for comment in comment_user %}
+                    <div class="col-md-3 col-sm-9 col-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Пользователь {{comment.user}}</h5>
+                                <p class="card-text">{{comment.text}}</p>
+                                <a class="btn btn-primary update-btn"
+                                   href="{% url 'website:comment-update' pk=comment.pk %}">Update comment</a>
+                                <a class="btn btn-danger delete-btn"
+                                   href="{% url 'website:comment-delete' pk=comment.pk %}">Delete comment</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% for comments in comment_another_users %}
+            {% if forloop.counter == 1 %}
+            <div class="carousel-item">
+                <div class="row justify-content-center">
+                    {% endif %}
+                    <div class="col-md-3 col-sm-9 col-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Пользователь {{ comments.user }}</h5>
+                                <p class="card-text">{{ comments.text }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:2 or forloop.last %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <div class="carousel-item">
+                <div class="row justify-content-center">
+                    {% endif %}
+                    {% endif %}
+                    {% if forloop.last and not forloop.counter|divisibleby:3 %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('.carousel').carousel();
+    });
+
+
+</script>
 {% endif %}
 {% endblock %}
 {% include "footer.html" %}

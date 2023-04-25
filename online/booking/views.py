@@ -1,13 +1,14 @@
+import os
 from django.shortcuts import render, redirect
 from datetime import datetime, timedelta, time
 from .models import *
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.urls import reverse
-import locale
 from django.db.models import Q
+from dotenv import load_dotenv
+from .tasks import notifacation_record
 
-locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+load_dotenv()
 
 
 def booking(request):
@@ -68,16 +69,18 @@ def bookingSubmit(request):
         time = request.POST.get("time")  # получение времени
         if service != None:
             if day <= maxdate and day >= mindate:
-                    if Appointment.objects.filter(day=day).count() < 11:
-                        if Appointment.objects.filter(day=day, time=time).count() < 1:
-                            Appointment.objects.get_or_create(
-                                user=request.user,
-                                service=service,
-                                day=day,
-                                time=time,
-                            )
-                            messages.success(request, "Appointment already exists!")
-                            return redirect('website:index')
+                if Appointment.objects.filter(day=day).count() < 11:
+                    if Appointment.objects.filter(day=day, time=time).count() < 1:
+                        record = Appointment.objects.get_or_create(
+                            user=request.user,
+                            service=service,
+                            day=day,
+                            time=time,
+                        )
+                        appoint_id = record[0].id
+                        notifacation_record.delay(appoint_id)
+                        messages.success(request, "Appointment already exists!")
+                        return redirect('booking:user_record')
     return render(request, 'booking/bookingSubmit.html', {
         'times': hour,
     })
@@ -148,16 +151,18 @@ def userUpdateSubmit(request, id):
         time = request.POST.get("time")
         if service != None:
             if day <= maxDate and day >= minDate:
-                    if Appointment.objects.filter(day=day).count() < 11:
-                        if Appointment.objects.filter(day=day, time=time).count() < 1 or userselectedtime == time:
-                            Appointment.objects.filter(pk=id).update(
-                                user=request.user,
-                                service=service,
-                                day=day,
-                                time=time,
-                            )
-                            messages.success(request, "Appointment Edited!")
-                            return redirect('booking:user_record')
+                if Appointment.objects.filter(day=day).count() < 11:
+                    if Appointment.objects.filter(day=day, time=time).count() < 1 or userselectedtime == time:
+                        record = Appointment.objects.filter(pk=id).update(
+                            user=request.user,
+                            service=service,
+                            day=day,
+                            time=time,
+                        )
+                        appoint_id = record[0].id
+                        notifacation_record.delay(appoint_id)
+                        messages.success(request, "Appointment Edited!")
+                        return redirect('booking:user_record')
     return render(request, 'booking/userUpdateSubmit.html', {
         'times': hour,
         'id': id,
@@ -234,7 +239,7 @@ def remove(request, id):
     delta24 = (userdatepicked).strftime('%Y-%m-%d') >= (today + timedelta(days=1)).strftime('%Y-%m-%d')
     if delta24 is True:
         appointment.delete()
-        return redirect(reverse('website:profile'))
+        return redirect(reverse('booking:user_record'))
     else:
         return render(request, 'booking/Falsedelete.html')
 
