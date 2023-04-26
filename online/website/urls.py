@@ -10,6 +10,7 @@ urlpatterns = [
     path("service", views.service_view, name="service"),
     path("service/<int:pk>", views.service_info, name="service_info"),
     path("comment", views.comments, name="comment"),
+    path("comment_add", views.comment_add, name="comment_add"),
     path(
         "comment/<int:pk>/update",
         views.CommentUpdateView.as_view(),

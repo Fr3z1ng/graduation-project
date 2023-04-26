@@ -39,7 +39,6 @@ class CommentWebsite(models.Model):
     pub_date = models.DateField(
         verbose_name="Comment publication date", auto_now=True
     )
-    rating = models.IntegerField(verbose_name="Rating comment")
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True
     )  # добавил поле user

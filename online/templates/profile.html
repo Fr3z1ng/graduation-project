@@ -5,54 +5,66 @@
 <main class="container mt-5">
     <div class="row">
         {% if not profile %}
-        <div class="col-md-6">
+        <div class="col-md-6 mx-auto">
             <h2 class="mb-4">Create Profile</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">Введите имя</label>
                     {{ form.first_name }}
                 </div>
                 <div class="mb-3">
-                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Введите фамилию</label>
                     {{ form.last_name }}
                 </div>
                 <div class="mb-3">
-                    <label for="profile-image" class="form-label">Profile Image</label>
+                    <label for="profile-image" class="form-label">Выберите аватар профиля</label>
                     <input class="form-control" type="file" name="profile_image" id="profile-image">
                 </div>
                 <div class="mb-3">
-                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">Телефонный номер</label>
                     {{ form.phone_number }}
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
-        {% endif %}
-        <div class="col-md-6">
-            <h2 class="mb-4">My Profile</h2>
+    </div>
+    {% endif %}
+</main>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
             {% for profiles in profile %}
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ profiles.profile_image.url }}" class="card-img-top" alt="Profile Image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ profiles.first_name }} {{ profiles.last_name }}</h5>
-                            <p class="card-text">Phone: {{ profiles.phone_number }}</p>
-                            <a href="#" class="btn btn-primary">Edit Profile</a>
+            <div class="row-profile">
+                <div class="col-md-12">
+                    <div class="card-profile mb-4">
+                        <img src="{{ profiles.profile_image.url }}" class="card-profile-img-top"
+                             alt="Profile Image">
+                        <div class="card-profile-body">
+                            <h5 class="card-profile-title">{{ profiles.first_name }} {{ profiles.last_name }}</h5>
+                            <p class="card-profile-text">Phone: {{ profiles.phone_number }}</p>
+                            <a href="#" class="btn-profile btn-primary">Edit Profile</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <!-- right section -->
-                </div>
             </div>
-            {% empty %}
-            <p>No profiles found.</p>
             {% endfor %}
+
+        </div>
+<div class="wrapper">
+    <div class="profile">
+        <div class="overlay">
+            <div class="about d-flex flex-column">
+                <h4>Kim Sarah</h4> <span>Software Developer</span>
+            </div>
+            <ul class="social-icons">
+                <li><i class="fa fa-facebook"></i></li>
+                <li><i class="fa fa-linkedin"></i></li>
+                <li><i class="fa fa-twitter"></i></li>
+                <li><i class="fa fa-instagram"></i></li>
+            </ul>
         </div>
     </div>
-</main>
+</div>
 {% endblock %}
 {% include "footer.html" %}
-

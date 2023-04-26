@@ -31,12 +31,6 @@ class CommentModelForm(forms.ModelForm):
     Форма для ввода и редактирования комментария
     """
 
-    def clean_rating(self):
-        rating = self.cleaned_data["rating"]
-        if rating < 0 or rating > 10:
-            raise forms.ValidationError("Only possitive number and less 11 are allowed")
-        return rating
-
     class Meta:
         model = CommentWebsite
         exclude = [
@@ -47,7 +41,10 @@ class CommentModelForm(forms.ModelForm):
         widgets = ({"text": Textarea(attrs={"cols": 80, "rows": 20})},)
         labels = (
             {
-                "text": "Comment text",
+                "text": "Оставьте ваш отзыв",
             },
         )
         help_texts = {"text": "Оцените нас,пожалуйста "}
+        fields = ("text",)
+        required = {"rating": False}
+

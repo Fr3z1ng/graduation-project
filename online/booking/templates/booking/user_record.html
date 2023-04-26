@@ -11,8 +11,8 @@
             <p class="list-group item">Время: {{ appointment.time }}</p>
             <p class="list-group item">Услуга: {{ appointment.service.name }}</p>
             <div class="mt-3 mb-2">
-                <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:userUpdate' appointment.id %}">Edit Appointment</a>
-                <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:remove' appointment.id %}">Delete Appointment</a>
+                <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:userUpdate' appointment.id %}">Редактировать запись</a>
+                <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:remove' appointment.id %}">Удалить запись</a>
             </div>
         </div>
         <hr>

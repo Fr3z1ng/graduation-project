@@ -35,7 +35,7 @@ def profile(request):
             prof.profile_image = form.cleaned_data['profile_image']
             prof.user = request.user
             prof.save()
-            return render(request, 'profile.html')
+            return redirect(reverse('website:profile'))
     else:
         form = ProfileModelForm()
     return render(request, "profile.html",
@@ -65,6 +65,12 @@ def comments(request):
     service = Service.objects.all()
     comment_user = CommentWebsite.objects.filter(user=request.user)
     comment_another_users = CommentWebsite.objects.exclude(user=request.user)
+    return render(request, "website/comment.html",
+                  context={'comment_user': comment_user, 'comment_another_users': comment_another_users,
+                           'service': service})
+
+
+def comment_add(request):
     if request.method == 'POST':
         comment_form = CommentModelForm(data=request.POST)
         if comment_form.is_valid():
@@ -76,12 +82,10 @@ def comments(request):
                 return redirect(reverse('users:login'))
             new_comment.save()
             replace_text_with_censored.delay(new_comment.id)
+            return redirect(reverse('website:comment'))
     else:
         comment_form = CommentModelForm()
-    return render(request, "website/comment.html",
-                  context={'comment_user': comment_user, 'comment_another_users': comment_another_users,
-                           'service': service,
-                           'form': comment_form})
+    return render(request, "website/comment_form.html", context={'form': comment_form})
 
 
 class CommentCreateView(CreateView):
