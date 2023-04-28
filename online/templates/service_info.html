@@ -1,13 +1,44 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 {% load static %}
-{% block nav %}
-{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1>{{ service.name }}</h1>
-    <p>{{ service.description }}</p>
-    <p>Цена: {{ service.cost }}</p>
-    <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:booking_day' service.id%}">Add Appointment</a>
+<div class="container-service py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">{{ service_info.name }}</h1>
+            <p class="lead">{{ service_info.description }}</p>
+        </div>
+    </div>
+</div>
+    <div class="booking-details">
+        <h3>Детали услуги:</h3>
+        <ul>
+            <li><span class="booking-info-label">Время:</span> <span class="booking-time">{{ service_info.time }}</span>
+            </li>
+            <li>
+                <span class="booking-info-label">Плюсы:</span>
+                <ul class="booking-pros">
+                    {% for pro in service_info.pros.splitlines %}
+                    <li>{{ pro }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>
+                <span class="booking-info-label">Минусы:</span>
+                <ul class="booking-minuses">
+                    {% for minus in service_info.minuses.splitlines %}
+                    <li>{{minus}}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="booking-cost">
+        <p>Цена: {{ service_info.cost }} Бел.руб</p>
+        <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:booking_day' service_info.id %}">Записаться на
+            услугу</a>
+    </div>
 </div>
 {% endblock %}
+
 {% include "footer.html" %}

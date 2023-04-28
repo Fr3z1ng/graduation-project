@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from booking.models import Appointment, HistoryBooking
 from .models import Service, Profile, CommentWebsite, PhotoGallery
-from .forms import ProfileModelForm, CommentModelForm
+from .forms import ProfileModelForm, CommentModelForm, ProfileEditModelForm
 from django.urls import reverse, reverse_lazy
 from .models import Profile
 from datetime import datetime
@@ -42,6 +42,21 @@ def profile(request):
                   context={'profile': profile_all, 'form': form, 'service': service})
 
 
+@login_required(login_url="users:login")
+def profile_edit(request):
+    service = Service.objects.all()
+    profile = Profile.objects.get(user=request.user.id)
+    if request.method == 'POST':
+        form = ProfileEditModelForm(request.POST, request.FILES, instance=profile)  # передать текущий профиль в качестве экземпляра instance
+        if form.is_valid():
+            form.save()  # сохранить изменения
+            return redirect(reverse('website:profile'))
+    else:
+        form = ProfileEditModelForm(instance=profile)
+    return render(request, "profile_edit.html",
+                  context={'profile': profile, 'form': form, 'service': service})
+
+
 def service_view(request: HttpRequest):
     """
     Представление для всех категорий
@@ -54,8 +69,9 @@ def service_info(request, pk):
     """
     Представление для конкретной услуги
     """
-    service = Service.objects.get(pk=pk)
-    return render(request, "service_info.html", context={'service': service})
+    service = Service.objects.all()
+    service_information = Service.objects.get(pk=pk)
+    return render(request, "service_info.html", context={'service': service, 'service_info': service_information})
 
 
 def comments(request):
@@ -115,4 +131,17 @@ def gallery(request):
     """
     service = Service.objects.all()
     photo = PhotoGallery.objects.all()
-    return render(request, "Photogallery.html", context={'photo': photo, 'service': service})
+    for i in photo:
+        i.category.name = i.category.name.replace(' ', '-')
+    photo_illu = PhotoGallery.objects.all()
+    category_names = set()
+    new_photo_illu = []
+    for i in photo_illu:
+        category_name = i.category.name.replace(' ', '-')
+        if category_name not in category_names:
+            category_names.add(category_name)
+            i.category.name = category_name
+            new_photo_illu.append(i)
+    photo_illu = new_photo_illu
+    return render(request, "Photogallery.html",
+                  context={'gallery': photo, 'service': service, 'gallery_illu': photo_illu})

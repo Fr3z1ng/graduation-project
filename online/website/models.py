@@ -56,10 +56,9 @@ class PhotoGallery(models.Model):
     photo_gallery = models.ImageField(
         upload_to="profile", blank=True, null=True, verbose_name="Photo gallery Image"
     )
-    short_description = models.TextField(max_length=250, verbose_name='Service short description')
-
-    def __str__(self):
-        return self.short_description
+    category = models.ForeignKey(
+        Service, on_delete=models.CASCADE, null=True, blank=True
+    )
 
 
 class StockShares(models.Model):

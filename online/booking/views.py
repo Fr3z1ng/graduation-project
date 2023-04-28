@@ -1,6 +1,5 @@
-import os
 from django.shortcuts import render, redirect
-from datetime import datetime, timedelta, time
+from datetime import timedelta, time
 from .models import *
 from django.contrib import messages
 from django.urls import reverse
@@ -28,8 +27,8 @@ def booking(request):
 
 
 def booking_day(request, service_id=None):
-    weekdays = validWeekday(31)
-    validate_weekdays = isWeekdayValid(weekdays)
+    weekdays = validweekday(31)
+    validate_weekdays = isweekdayvalid(weekdays)
     if service_id is not None:
         service = Service.objects.get(id=service_id)
         request.session['service'] = service.name
@@ -44,7 +43,7 @@ def booking_day(request, service_id=None):
     })
 
 
-def bookingSubmit(request):
+def bookingsubmit(request):
     times = [
         "10.00 PM", "10:30 PM",
         "11.00 PM", "11:30 PM",
@@ -64,43 +63,41 @@ def bookingSubmit(request):
     day = request.session.get('day')
     service_name = request.session.get('service')
     service = Service.objects.get(name=service_name) if service_name else None
-    hour = checkTime(times, day)  # проверка забронировано ли время другим пользователем в этот день
+    hour = checktime(times, day)  # проверка забронировано ли время другим пользователем в этот день
+    time = request.POST.get("time")  # получение времени
     if request.method == 'POST':
-        time = request.POST.get("time")  # получение времени
-        if service != None:
-            if day <= maxdate and day >= mindate:
-                if Appointment.objects.filter(day=day).count() < 11:
-                    if Appointment.objects.filter(day=day, time=time).count() < 1:
-                        record = Appointment.objects.get_or_create(
-                            user=request.user,
-                            service=service,
-                            day=day,
-                            time=time,
-                        )
-                        appoint_id = record[0].id
-                        notifacation_record.delay(appoint_id)
-                        messages.success(request, "Appointment already exists!")
-                        return redirect('booking:user_record')
+        if maxdate >= day >= mindate:
+            if Appointment.objects.filter(day=day, time=time).count() < 1 and Appointment.objects.filter(
+                    day=day).count() < 11:
+                record = Appointment.objects.get_or_create(
+                    user=request.user,
+                    service=service,
+                    day=day,
+                    time=time,
+                )
+                appoint_id = record[0].id
+                notifacation_record.delay(appoint_id)
+                messages.success(request, "Appointment already exists!")
+                return redirect('booking:user_record')
     return render(request, 'booking/bookingSubmit.html', {
         'times': hour,
     })
 
 
-def userUpdate(request, id):
+def userupdate(request, id):
     services = Service.objects.all()
     appointment = Appointment.objects.get(pk=id)
     userdatepicked = appointment.day
     # Copy  booking:
     today = datetime.today()
-    minDate = today.strftime('%Y-%m-%d')
 
     # 24h if statement in template:
-    delta24 = (userdatepicked).strftime('%Y-%m-%d') >= (today + timedelta(days=1)).strftime('%Y-%m-%d')
+    delta24 = userdatepicked.strftime('%Y-%m-%d') >= (today + timedelta(days=1)).strftime('%Y-%m-%d')
     # Calling 'validWeekday' Function to Loop days you want in the next 21 days:
-    weekdays = validWeekday(31)
+    weekdays = validweekday(31)
 
     # Only show the days that are not full:
-    validateWeekdays = isWeekdayValid(weekdays)
+    validateweekdays = isweekdayvalid(weekdays)
 
     if request.method == 'POST':
         service = request.POST.get('service')
@@ -114,14 +111,14 @@ def userUpdate(request, id):
 
     return render(request, 'booking/userUpdate.html', {
         'weekdays': weekdays,
-        'validateWeekdays': validateWeekdays,
+        'validateWeekdays': validateweekdays,
         'delta24': delta24,
         'id': id,
         'services': services
     })
 
 
-def userUpdateSubmit(request, id):
+def userupdatesubmit(request, id):
     times = [
         "10.00 PM", "10:30 PM",
         "11.00 PM", "11:30 PM",
@@ -144,7 +141,7 @@ def userUpdateSubmit(request, id):
     service = Service.objects.get(name=service_name) if service_name else None
 
     # Only show the time of the day that has not been selected before and the time he is editing:
-    hour = checkEditTime(times, day, id)
+    hour = checktime(times, day)
     appointment = Appointment.objects.get(pk=id)
     userselectedtime = appointment.time
     if request.method == 'POST':
@@ -159,8 +156,6 @@ def userUpdateSubmit(request, id):
                             day=day,
                             time=time,
                         )
-                        appoint_id = record[0].id
-                        notifacation_record.delay(appoint_id)
                         messages.success(request, "Appointment Edited!")
                         return redirect('booking:user_record')
     return render(request, 'booking/userUpdateSubmit.html', {
@@ -169,13 +164,13 @@ def userUpdateSubmit(request, id):
     })
 
 
-def dayToWeekday(x):
+def daytoweekday(x):
     z = datetime.strptime(x, "%Y-%m-%d")
     y = z.strftime('%A')
     return y
 
 
-def validWeekday(days):
+def validweekday(days):
     today = datetime.now()  # получение текущей даты
     weekdays = []  # пустой список для хранения для недели
     booking_settings = BookingSettings.objects.all()
@@ -190,15 +185,15 @@ def validWeekday(days):
     return weekdays
 
 
-def isWeekdayValid(x):
-    validateWeekdays = []
+def isweekdayvalid(x):
+    validateweekdays = []
     for j in x:
         if Appointment.objects.filter(day=j).count() < 10:  # кол-во записей на день
-            validateWeekdays.append(j)
-    return validateWeekdays
+            validateweekdays.append(j)
+    return validateweekdays
 
 
-def checkTime(times, day):
+def checktime(times, day):
     # Only show the time of the day that has not been selected before:
     x = []
     now = datetime.now()
@@ -214,7 +209,7 @@ def checkTime(times, day):
     return x
 
 
-def checkEditTime(times, day, id):
+def checkedittime(times, day, id):
     # Only show the time of the day that has not been selected before:
     x = []
     now = datetime.now()

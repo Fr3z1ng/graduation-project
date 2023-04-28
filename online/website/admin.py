@@ -19,4 +19,4 @@ class CommentWebsiteAdmin(admin.ModelAdmin):
 
 @admin.register(PhotoGallery)
 class PhotoGalleryAdmin(admin.ModelAdmin):
-    list_display = ['photo_gallery', 'short_description']
+    list_display = ['photo_gallery', 'category']
