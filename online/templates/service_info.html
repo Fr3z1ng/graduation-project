@@ -2,43 +2,54 @@
 {% load static %}
 
 {% block content %}
-<div class="container-service py-5">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <h1 class="text-center mb-5">{{ service_info.name }}</h1>
-            <p class="lead">{{ service_info.description }}</p>
+<section class="service-section py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">{{ service_info.name }}</h1>
+        <div class="service-details mb-4">
+            <div class="row">
+                <div class="col-md-4 order-md-1">
+                    <img class="img-fluid service-image" src="{{ service_info.service_image.url }}" alt=""
+                         style="width: 80%;">
+                </div>
+                <div class="col-md-8 order-md-2">
+                    <p class="lead w-100">{{ service_info.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="service-details mb-4">
+            <div class="row">
+                <div class="col-md-6 order-md-1">
+                    <h3>Плюсы:</h3>
+                    <ul class="service-pros">
+                        {% for pro in service_info.pros.splitlines %}
+                        <li>{{ pro }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6 order-md-2">
+                    <h3>Минусы:</h3>
+                    <ul class="service-minuses">
+                        {% for minus in service_info.minuses.splitlines %}
+                        <li>{{minus}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-    <div class="booking-details">
-        <h3>Детали услуги:</h3>
-        <ul>
-            <li><span class="booking-info-label">Время:</span> <span class="booking-time">{{ service_info.time }}</span>
-            </li>
-            <li>
-                <span class="booking-info-label">Плюсы:</span>
-                <ul class="booking-pros">
-                    {% for pro in service_info.pros.splitlines %}
-                    <li>{{ pro }}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li>
-                <span class="booking-info-label">Минусы:</span>
-                <ul class="booking-minuses">
-                    {% for minus in service_info.minuses.splitlines %}
-                    <li>{{minus}}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="service-cost text-center">
+                <span class="service-info-label">Время:</span>
+                <span class="service-time">{{ service_info.time }}</span>
+                <p class="mb-0">Цена: {{ service_info.cost }} Бел.руб</p>
+                <a class="btn btn-primary rounded-3 mt-3" href="{% url 'booking:booking_day' service_info.id %}">Записаться
+                    на услугу</a>
+            </div>
+        </div>
     </div>
-    <div class="booking-cost">
-        <p>Цена: {{ service_info.cost }} Бел.руб</p>
-        <a class="btn btn-primary rounded-3 p-2" href="{% url 'booking:booking_day' service_info.id %}">Записаться на
-            услугу</a>
-    </div>
-</div>
+</section>
 {% endblock %}
 
 {% include "footer.html" %}

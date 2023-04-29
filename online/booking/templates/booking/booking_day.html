@@ -1,20 +1,16 @@
-<title>Online Booking</title>
+{% extends "base.html"%}
 {% load static %}
-{% block body %}
-
-
-
-
+{% block content %}
 {% if user.is_authenticated %}
-<h1 class="text-center  mt-3">Online Booking</h1>
+<h1 class="text-center  mt-3">Онлайн запись</h1>
 
 <div class="shadow p-4 mb-5 bg-body bg-body rounded text-black  m-5 ">
     <form method="post" action="{% url 'booking:booking_day' %}" class="me-2 ms-2">
         {% csrf_token %}
             <!--input day-->
             <div class="mt-3">
-                <h3 class="">Select Day:</h3>
-                <select class="form-select fs-3" name="day">
+                <h3 class="">Выберите день:</h3>
+                <select class="form-select" name="day">
                     {% for validateWeekday in validateWeekdays %}
                     <option value="{{validateWeekday}}">{{validateWeekday}}</option>
                     {% endfor %}
@@ -22,18 +18,8 @@
             </div>
 
             <br/>
-            <button type="submit" class="btn btn-primary text-white">Continue</button>
+            <button type="submit" class="btn btn-primary text-white">Продолжить</button>
     </form>
 </div>
-
-{% else %}
-
-<div class="shadow p-4 mb-5 bg-body bg-body rounded text-black  m-5 ">
-    <h1 class="p-2  me-3">You Are Not Signed in!</h1>
-    <a href="{% url 'users:register' %}" class="btn btn-primary shadow text-center">Sign in</a>
-</div>
-
 {% endif %}
-
-
 {% endblock %}

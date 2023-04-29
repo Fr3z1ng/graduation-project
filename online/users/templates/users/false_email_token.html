@@ -1,0 +1,7 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<p>Ваш токен оказался недействительным попробуйте еще раза</p>
+<a href="{% url 'website:index' %}">Перейти на главную</a>
+{% endblock %}
+{% include "footer.html" %}

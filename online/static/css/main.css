@@ -503,50 +503,84 @@ color: #fff;
   object-fit: cover;
   object-position: center center;
 }
+/* Стили для блока услуги */
 
-.container-service {
-  max-width: 800px;
-  margin: 0 auto;
+.service-image {
+  width: 400px;
+  height: auto;
+  margin-bottom: 1rem;
+  object-fit: cover;
 }
 
-.booking-details {
-  margin-top: 50px;
+.service-details {
+  margin-top: 2rem;
 }
 
-.booking-info-label {
+.service-info-label {
   font-weight: bold;
 }
 
-.booking-time {
+.service-time {
   color: #007bff;
   font-weight: bold;
 }
 
-.booking-pros,
-.booking-minuses {
-    list-style: none;
-    padding: 0;
+.service-pros {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.service-minuses {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-direction: row-reverse;
 }
 
-.booking-pros li:before {
-    content: "+";
-    color: green;
-    margin-right: 5px;
+.service-pros li:before {
+  content: "+";
+  color: green;
+  margin-right: 5px;
 }
 
-.booking-minuses li:before {
-    content: "-";
-    color: red;
-    margin-right: 5px;
+.service-minuses li:before {
+  content: "-";
+  color: red;
+  margin-right: 5px;
+
 }
 
-.booking-cost {
-  margin-top: 50px;
-  text-align: center;
+.service-details p.lead {
+    color: #006400;
+    background-color: #F8E7E7;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.booking-cost p {
-  font-weight: bold;
-  font-size: 24px;
+.service-info-label, .service-time, .service-cost p {
+    color: #006400;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.service-info-label, .service-time {
+    font-size: 24px;
+}
+
+.service-time {
+    font-size: 36px;
+    margin-right: 10px;
+}
+
+.service-cost {
+    background-color: #F8E7E7;
+    padding: 10px;
+    border-radius: 5px;
 }
 

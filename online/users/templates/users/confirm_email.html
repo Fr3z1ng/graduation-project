@@ -1,0 +1,7 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<p>На ваш почтовый адрес отправлена ссылка подтверждения, для активации аккаунта</p>
+<a href="{%url 'website:index' %}">Вернуться на главную страницу</a>
+{% endblock %}
+{% include "footer.html" %}

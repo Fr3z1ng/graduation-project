@@ -39,7 +39,7 @@
                 <h4>{{ profiles.first_name }} {{ profiles.last_name }}</h4> <span>Номер телефона: {{ profiles.phone_number }}</span>
             </div>
             <ul class="social-icons">
-                <a style="text-decoration: none" href="{% url 'booking:booking_day'%}"><li>Записаться</li></a>
+                <a style="text-decoration: none" href="{% url 'booking:booking'%}"><li>Записаться</li></a>
                 <a href ="{% url 'booking:user_record' %}" style="text-decoration: none"><li>Ваши записи</li></a>
                 <li><i class="fa fa-twitter"></i>История записей</li>
             </ul>

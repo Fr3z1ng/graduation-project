@@ -1,0 +1,8 @@
+{% extends "base.html"%}
+{% load static %}
+{% block content %}
+<p>Неправильно введен логин или пароль</p>
+<a href="{%url 'users:login' %}">Попробовать снова</a>
+<a href="{%url 'website:index' %}">Вернуться на главную</a>
+{% endblock %}
+{% include "footer.html" %}

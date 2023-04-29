@@ -47,7 +47,8 @@ def profile_edit(request):
     service = Service.objects.all()
     profile = Profile.objects.get(user=request.user.id)
     if request.method == 'POST':
-        form = ProfileEditModelForm(request.POST, request.FILES, instance=profile)  # передать текущий профиль в качестве экземпляра instance
+        form = ProfileEditModelForm(request.POST, request.FILES,
+                                    instance=profile)  # передать текущий профиль в качестве экземпляра instance
         if form.is_valid():
             form.save()  # сохранить изменения
             return redirect(reverse('website:profile'))
