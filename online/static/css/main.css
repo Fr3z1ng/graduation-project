@@ -210,21 +210,43 @@ a:hover {
   text-decoration: none;
 }
 
-
-
-.main .my_div {
-  position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 .main .custom {
     position: absolute;
     top: 5%;
-    left: 44.5%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
+.main .my_div {
+    top: 70%;
+}
+.main .custom {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.main .custom {
+    top: 10%;
+    font-size: 28px;
+}
+
+.main .list-group-custom.item {
+    font-size: 18px;
+}
+
+.main .my_div {
+    top: 80%;
+}
+
+.main .custom {
+    top: 5%;
+    font-size: 24px;
+}
+
+.list-group-custom.item {
+    font-size: 16px;
+}
+
 
 .main .carousel-inner {
    height: 400px;
@@ -583,4 +605,169 @@ color: #fff;
     padding: 10px;
     border-radius: 5px;
 }
+/* Стили для блока много услуг*/
+.avatar-wrapper {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #FFC2D2;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.articles-cost {
+  margin: 30px 0;
+}
+
+.article-wrapper-cost {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #FEEAEF;
+  border: 2px solid #C82333;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.article-wrapper-cost:first-of-type {
+  margin-top: 20px;
+}
+
+
+.article-body-cost {
+  flex: 1;
+}
+
+.service-info {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.service-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #C82333;
+  margin-right: 20px;
+}
+
+.read-more-cost {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #C82333;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.read-more-cost:hover {
+  color: #ffffff;
+  background-color: #C82333;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  fill: currentColor;
+}
+
+.main .article-h2 {
+  color: black;
+}
+
+.main .article-p {
+  text-indent: 20px; /* Отступ первой строки */
+  line-height: 1.4; /* Высота строки */
+  font-size: 16px; /* Размер шрифта */
+  color: #333; /* Цвет текста */
+  margin-bottom: 10px; /* Отступ снизу */
+}
+
+/* Стили для блока логин*/
+.login {
+  background-color: #FFC0CB;
+  padding: 2em;
+  border-radius: 20px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, .4);
+  width: 50%;
+  margin: 5em auto;
+}
+
+.login h2 {
+  text-align: center;
+  color: #008080;
+  margin-bottom: 2em;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login input[type="text"],
+.login input[type="password"] {
+  width: 100%;
+  padding: 1em;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  background-color: #f2f2f2;
+}
+
+.login input[type="submit"] {
+  background-color: #008080;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 1em 2em;
+  cursor: pointer;
+}
+
+.login input[type="submit"]:hover {
+  background-color: #005959;
+}
+
+.login a {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.btn-login {
+  background-color: #008080;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 1em 2em;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+  background-color: #005959;
+}
+
+.button-login {
+  display: inline-block;
+  padding: 10px 20px;
+  color: black;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.button-login:hover {
+  background-color: #D81B60;
+}
+/* Стили для блока история записей*/
 

@@ -253,3 +253,13 @@ def record_view(request):
         appointments_expired.delete()
     return render(request, "booking/user_record.html",
                   context={'appointments': appointments, 'service': service})
+
+
+def history_user(request):
+    """
+    Представление для конкретной услуги
+    """
+    service = Service.objects.all()
+    history_booking = HistoryBooking.objects.filter(user=request.user)
+    print(history_booking)
+    return render(request, "booking/history_user.html", context={'history_user': history_booking, 'service': service})

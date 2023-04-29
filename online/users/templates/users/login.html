@@ -1,15 +1,19 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 {% load static %}
-{% block content %}
-<h2>Login</h2>
 
-<form method="post">
-  {% csrf_token %}
-  {{form.as_p}}
-  <input type="submit" value="Login">
- <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-</form>
-<a href="{%url 'users:password_reset' %}">Забыли пароль?</a>
-<a href="{%url 'website:index' %}">Back to shop</a>
+{% block content %}
+<div class="login">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Войти" class="btn-login btn-primary">
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <a href="{% url 'users:register' %}" class="btn-login btn-primary">Зарегистрироваться</a>
+    </form>
+
+    <a class="button-login" href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+    <a class="button-login" href="{% url 'website:index' %}" style="float: right;">Вернуться на главную</a>
+</div>
 {% endblock %}
-{% include "footer.html" %}
+

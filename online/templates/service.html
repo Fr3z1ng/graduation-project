@@ -1,10 +1,29 @@
 {% extends "base.html"%}
 {% load static %}
 {% block content %}
-<div class="container">
-    {% for services in service %}
-    <li> Название услуги: {{ services.name}}; Цена:{{services.cost}}</li><a href="{% url 'website:service_info' services.pk %}">link</a>
-    {% endfor %}
-</div>
+<section class="articles-cost">
+  {% for services in service %}
+  <article>
+    <div class="article-wrapper-cost">
+      <div class="avatar-wrapper">
+        <img src="{{ services.service_image.url }}" alt="" class="avatar" />
+      </div>
+      <div class="article-body-cost">
+        <h2 class="article-h2">{{ services.name }}</h2>
+        <p class="article-p">{{ services.short_description }}</p>
+        <div class="service-info">
+          <span class="service-price">{{ services.price }}</span>
+          <a href="{% url 'website:service_info' services.id %}" class="read-more-cost">
+            Подробнее
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</section>
 {% endblock %}
 {% include "footer.html" %}

@@ -11,4 +11,5 @@ urlpatterns = [
     path('user-update-submit/<int:id>', views.userupdatesubmit, name='userUpdateSubmit'),
     path('remove/<int:id>', views.remove, name='remove'),
     path('user_record', views.record_view, name='user_record'),
+    path("history", views.history_user, name="history_user"),
 ]
