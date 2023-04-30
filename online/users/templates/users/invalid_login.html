@@ -1,8 +1,17 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 {% load static %}
+
 {% block content %}
-<p>Неправильно введен логин или пароль</p>
-<a href="{%url 'users:login' %}">Попробовать снова</a>
-<a href="{%url 'website:index' %}">Вернуться на главную</a>
+  <div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6 text-center">
+        <i class="fa fa-exclamation-triangle fa-4x text-danger mb-3"></i>
+        <h2 class="confirm">Неправильно введен логин или пароль</h2>
+        <a class="btn btn-primary mr-3" href="{% url 'users:login' %}" role="button">Попробовать снова</a>
+        <a class="btn btn-primary mr-3" href="{% url 'website:index' %}" role="button">Вернуться на главную</a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
 {% include "footer.html" %}

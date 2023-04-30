@@ -7,16 +7,24 @@ from django.contrib.auth.models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, required=True, help_text='Required. Enter a valid email address.')
+    email = forms.EmailField(
+        max_length=254,
+        required=True,
+        widget=forms.EmailInput(attrs={'size': '65', 'style': 'height: 60px;'})
+    )
+    username = forms.CharField(
+        label='Введите никнейм',
+        widget=forms.TextInput(attrs={'class': 'my-input'}),
+        help_text='Никнейм не должен содержать специальные символы'
+    )
     password1 = forms.CharField(
-        label='Password',
-        widget=forms.PasswordInput,
-        help_text='Your password can\'t be too similar to your other personal information. Your password must contain at least 8 characters. Your password can\'t be a commonly used password. Your password can\'t be entirely numeric.'
+        label='Введите пароль',
+        widget=forms.PasswordInput(attrs={'class': 'my-input'}),
+        help_text='Ваш пароль не может состоять полностью из цирф и должен содержать не менее 8 символов'
     )
     password2 = forms.CharField(
-        label='Confirm password',
-        widget=forms.PasswordInput,
-        help_text='Enter the same password as before, for verification.'
+        label='Повторите пароль',
+        widget=forms.PasswordInput(attrs={'class': 'my-input'}),
     )
 
     class Meta:
@@ -40,9 +48,14 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     """
     Создал кастомную форму для добавления функционала смены пароля
     """
-
     template_name = "users/password_change.html"
     success_url = reverse_lazy("users:success_change")
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['old_password', 'new_password1', 'new_password2']:
+            self.fields[fieldname].help_text = None
 
     def clean(self):
         """

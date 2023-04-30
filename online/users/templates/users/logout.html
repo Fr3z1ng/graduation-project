@@ -1,9 +1,0 @@
-{% extends "base.html"%}
-{% load static %}
-{% block content %}
-<p>Logged out!</p>
-
-<a href="{% url 'website:index' %}">Click here to main page.</a>
-<a href="{% url 'login'%}">Click here to login again.</a>
-{% endblock %}
-{% include "footer.html" %}

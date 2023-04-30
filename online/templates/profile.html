@@ -41,7 +41,7 @@
             <ul class="social-icons">
                 <a style="text-decoration: none" href="{% url 'booking:booking'%}"><li>Записаться</li></a>
                 <a href ="{% url 'booking:user_record' %}" style="text-decoration: none"><li>Ваши записи</li></a>
-                <li><i class="fa fa-twitter"></i>История записей</li>
+                <a href ="{% url 'booking:history_user' %}" style="text-decoration: none"><li>История записей</li></a>
             </ul>
             <ul class="social-icons-custom">
                 <a href ="{% url 'website:profile_edit' %}" style="text-decoration: none"><li>Редактировать профиль</li></a>

@@ -12,7 +12,9 @@
         <h2 class="article-h2">{{ services.name }}</h2>
         <p class="article-p">{{ services.short_description }}</p>
         <div class="service-info">
-          <span class="service-price">{{ services.price }}</span>
+          <span class="service-price">{{ services.cost }} Бел.руб</span>
+        </div>
+        <div class="service-info-a">
           <a href="{% url 'website:service_info' services.id %}" class="read-more-cost">
             Подробнее
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 20 20" fill="currentColor">

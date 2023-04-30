@@ -1,7 +1,17 @@
 {% extends "base.html"%}
 {% load static %}
+
 {% block content %}
-<p>Аккаунт не активирован</p>
-<a href="{%url 'website:index' %}">Вернуться на главную страницу</a>
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6 text-center">
+      <i class="fa fa-envelope" aria-hidden="true"></i>
+      <h2 class="confirm">Аккаунт не активирован</h2>
+      <p class="lead mb-5">Для активации аккаунта перейдите по ссылке, которая была отправлена на ваш почтовый адрес</p>
+      <a class="btn btn-primary btn-lg" href="{% url 'website:index' %}" role="button">Вернуться на главную страницу</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
 {% include "footer.html" %}

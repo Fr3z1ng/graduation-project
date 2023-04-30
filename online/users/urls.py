@@ -1,6 +1,7 @@
 from .views import MyPasswordResetView, PasswordResetConfirmView
-from django.urls import include, path, re_path, reverse_lazy
+from django.urls import path
 from . import views
+
 
 app_name = "users"
 urlpatterns = [
@@ -13,4 +14,4 @@ urlpatterns = [
     path('password_reset/done/', views.password_reset_done, name='password_reset_done'),
     path('password_reset_confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('password_reset/complete/', views.password_reset_complete, name='password_reset_complete'),
-]
+    ]

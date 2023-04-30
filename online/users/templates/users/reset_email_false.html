@@ -1,16 +1,17 @@
-{% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">{% endblock %}
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-&rsaquo; {% translate 'Password reset' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 text-center">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <h2 class="confirm">Такой почты не существует</h2>
+            <a class="btn btn-primary btn-lg mb-5" href="{% url 'users:password_reset' %}" role="button">Вернуться ко
+                вводу почты</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
-{% block content %}
-
-<p>Такой почты не существует</p>
-<a href="{% url 'users:password_reset' %}">Вернуться ко вводу почты</a>
-{% endblock %}
+{% include "footer.html" %}
