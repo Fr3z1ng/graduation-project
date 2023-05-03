@@ -1,5 +1,25 @@
 {% extends "base.html"%}
 {% load static %}
 {% block content %}
+<section class="service-section py-5">
+    <div class="container text-center">
+        <div class="service-details mb-4">
+            <div class="row">
+                <h1 class="display-4 font-weight-bold">Приветствую вас на моей странице!</h1>
+                <p class="lead">
+                    Я - Лера, мастер по тейпированию. Если у вас болит спина, шея или другая часть тела, я могу помочь
+                    вам решить эту проблему. С помощью специальных тейпов я могу снять напряжение в мышцах и улучшить
+                    кровообращение.
+                    Тейпирование - это безболезненный и эффективный метод, который уже помог многим моим клиентам. Тейпы
+                    устраняют боли и спазмы мышц, помогают восстановить суставы и связки, а также улучшают лимфодренаж.
+                    Я с радостью помогу и вам!
+                </p>
+                <a class="btn btn-primary btn-lg mt-4" href="{% url 'booking:booking'%}" role="button">Записаться на
+                    услугу</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 {% include "footer.html" %}
+

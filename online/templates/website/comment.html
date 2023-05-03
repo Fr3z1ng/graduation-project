@@ -12,6 +12,26 @@
     </div>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
+            {% if comment_user %}
+            <div class="carousel-item">
+                <div class="row justify-content-center">
+                    {% for comment in comment_user %}
+                    <div class="col-md-3 col-sm-9 col-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Пользователь {{comment.user}}</h5>
+                                <p class="card-text">{{comment.text}}</p>
+                                <a class="btn btn-primary update-btn"
+                                   href="{% url 'website:comment-update' pk=comment.pk %}">Редактировать отзыв</a>
+                                <a class="btn btn-danger delete-btn"
+                                   href="{% url 'website:comment-delete' pk=comment.pk %}">Удалить отзыв</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             {% for comments in comment_another_users %}
             {% if forloop.counter == 1 %}
             <div class="carousel-item active">
@@ -38,26 +58,6 @@
             </div>
             {% endif %}
             {% endfor %}
-            {% if comment_user %}
-            <div class="carousel-item">
-                <div class="row justify-content-center">
-                    {% for comment in comment_user %}
-                    <div class="col-md-3 col-sm-9 col-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Пользователь {{comment.user}}</h5>
-                                <p class="card-text">{{comment.text}}</p>
-                                <a class="btn btn-primary update-btn"
-                                   href="{% url 'website:comment-update' pk=comment.pk %}">Редактировать отзыв</a>
-                                <a class="btn btn-danger delete-btn"
-                                   href="{% url 'website:comment-delete' pk=comment.pk %}">Удалить отзыв</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -81,6 +81,7 @@
     $(document).ready(function(){
         $('.carousel').carousel();
     });
+
 
 </script>
 {% endif %}

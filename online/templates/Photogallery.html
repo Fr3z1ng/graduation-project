@@ -2,34 +2,34 @@
 {% load static %}
 {% block content %}
 <main>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 text-center my-2">
-            <h4>Фотогалерея</h4>
-        </div>
-    </div>
-    <div class="portfolio-menu mt-2 mb-4">
-        <ul>
-            <li class="btn btn-outline-dark active" data-filter="*">All</li>
-            {% for photo in gallery_illu %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center my-2">
+                <h4>Фотогалерея</h4>
+            </div>
+        <div class="portfolio-menu mt-2 mb-4">
+            <ul>
+                <li class="btn btn-outline-dark active" data-filter="*">All</li>
+                {% for photo in gallery_illu %}
                 <li class="btn btn-outline-dark" data-filter=".{{ photo.category.name }}">{{ photo.category.name }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="portfolio-item row">
-        {% for photo in gallery %}
-        <div class="item {{photo.category.name}} col-lg-3 col-md-4 col-6 col-sm">
-            <a href="{{photo.photo_gallery.url}}"
-               class="fancylight popup-btn" data-fancybox-group="light">
-                <img class="img-fluid"
-                     src="{{photo.photo_gallery.url}}"
-                     alt="">
-            </a>
+                {% endfor %}
+            </ul>
         </div>
-        {% endfor %}
+        <div class="portfolio-item row">
+            {% for photo in gallery %}
+            <div class="item {{photo.category.name}} col-lg-3 col-md-4 col-6 col-sm">
+                <a href="{{photo.photo_gallery.url}}"
+                   class="fancylight popup-btn" data-fancybox-group="light">
+                    <img class="img-fluid"
+                         src="{{photo.photo_gallery.url}}"
+                         alt="">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
-<script>
+
+    <script>
 $('.portfolio-menu ul li').click(function(){
 $('.portfolio-menu ul li').removeClass('active');
 $(this).addClass('active');
@@ -51,7 +51,10 @@ enabled : true
 });
 
 
-</script>
+
+
+
+    </script>
 </main>
 {% endblock %}
 {% include "footer.html" %}

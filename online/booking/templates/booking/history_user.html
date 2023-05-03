@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="text-center mb-5">История ваших заказов</h3>
+    </div>
+  </div>
+  <div class="row align-items-stretch">
+    {% for history in history_user %}
+    <div class="col-md-4 mb-5">
+      <div class="card p-3 h-100">
+        <div class="row">
+          <div class="col-4">
+            <p class="history-label mb-0">Услуга:</p>
+          </div>
+          <div class="col-8">
+            <p class="history-value mb-0">{{ history.service }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <p class="history-label mb-0">День:</p>
+          </div>
+          <div class="col-8">
+            <p class="history-value mb-0">{{ history.day }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <p class="history-label mb-0">Время:</p>
+          </div>
+          <div class="col-8">
+            <p class="history-value mb-0">{{ history.time }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% include "footer.html" %}
+

@@ -1,8 +1,8 @@
 import os
 from celery import shared_task
 from django.core.mail import send_mail
-from datetime import datetime
-from .models import Appointment
+from datetime import datetime, timedelta
+from .models import Appointment, BookingSettings
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,3 +30,16 @@ def notifacation_record(appoint_id):
     send_mail('К вам записались', message, os.environ.get('EMAIL_HOST_USER'),
               [appointment.user.email],
               fail_silently=False)
+
+
+@shared_task
+def check_time_delete():
+    # Получаем текущую дату и время
+    now = datetime.now().date()
+
+    booking_settings = BookingSettings.objects.all()
+
+    for i in booking_settings:
+        if i.start_time <= now and i.start_time < i.end_time:
+            i.start_time = (now + timedelta(days=1))
+            i.save()

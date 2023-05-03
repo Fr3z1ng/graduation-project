@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.db.models import Q
 from dotenv import load_dotenv
 from .tasks import notifacation_record
+from datetime import datetime
+from datetime import timedelta
 
 load_dotenv()
 
@@ -146,18 +148,16 @@ def userupdatesubmit(request, id):
     userselectedtime = appointment.time
     if request.method == 'POST':
         time = request.POST.get("time")
-        if service != None:
-            if day <= maxDate and day >= minDate:
-                if Appointment.objects.filter(day=day).count() < 11:
-                    if Appointment.objects.filter(day=day, time=time).count() < 1 or userselectedtime == time:
-                        record = Appointment.objects.filter(pk=id).update(
-                            user=request.user,
-                            service=service,
-                            day=day,
-                            time=time,
-                        )
-                        messages.success(request, "Appointment Edited!")
-                        return redirect('booking:user_record')
+        if maxDate >= day >= minDate or Appointment.objects.filter(day=day).count() < 11:
+            if Appointment.objects.filter(day=day, time=time).count() < 1 or userselectedtime == time:
+                record = Appointment.objects.filter(pk=id).update(
+                    user=request.user,
+                    service=service,
+                    day=day,
+                    time=time,
+                )
+                messages.success(request, "Appointment Edited!")
+                return redirect('booking:user_record')
     return render(request, 'booking/userUpdateSubmit.html', {
         'times': hour,
         'id': id,
@@ -199,30 +199,13 @@ def checktime(times, day):
     now = datetime.now()
     time = now.time()
     formatted_time = time.strftime('%H:%M')
+    print(formatted_time)
     for k in times:
         if k[0:5] > formatted_time and day == str(now.date()):
             if Appointment.objects.filter(day=day, time=k).count() < 1:
                 x.append(k)
         elif day != str(now.date()):
             if Appointment.objects.filter(day=day, time=k).count() < 1:
-                x.append(k)
-    return x
-
-
-def checkedittime(times, day, id):
-    # Only show the time of the day that has not been selected before:
-    x = []
-    now = datetime.now()
-    time = now.time()
-    formatted_time = time.strftime('%H:%M')
-    appointment = Appointment.objects.get(pk=id)
-    time = appointment.time
-    for k in times:
-        if k[0:5] > formatted_time and day == str(now.date()):
-            if Appointment.objects.filter(day=day, time=k).count() < 1 or time == k:
-                x.append(k)
-        elif day != str(now.date()):
-            if Appointment.objects.filter(day=day, time=k).count() < 1 or time == k:
                 x.append(k)
     return x
 
@@ -242,7 +225,7 @@ def remove(request, id):
 def record_view(request):
     service = Service.objects.all()
     now = datetime.now()
-    appointments = Appointment.objects.filter(user=request.user)
+    appointments = Appointment.objects.filter(user=request.user).order_by('day', 'time')
     appointments_expired = Appointment.objects.filter(Q(day__lt=now.date()) | Q(day=now.date(), time__lt=now.time()))
 
     if appointments_expired:
@@ -259,7 +242,8 @@ def history_user(request):
     """
     Представление для конкретной услуги
     """
+
     service = Service.objects.all()
-    history_booking = HistoryBooking.objects.filter(user=request.user)
-    print(history_booking)
+    history_booking = HistoryBooking.objects.filter(user=request.user).order_by('day', 'time')
+
     return render(request, "booking/history_user.html", context={'history_user': history_booking, 'service': service})
