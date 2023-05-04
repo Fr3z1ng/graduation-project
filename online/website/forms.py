@@ -1,13 +1,13 @@
 from django import forms
 from django.forms import Textarea
-from django.views.generic.edit import FormView
+
 
 from .models import Profile, CommentWebsite
 
 
 class ProfileModelForm(forms.ModelForm):
     """
-    Форма для ввода и редактирования комментария
+    Форма для ввода данных профиля
     """
     profile_image = forms.ImageField(label='Фото профиля', required=False)
 
@@ -51,7 +51,7 @@ class CommentModelForm(forms.ModelForm):
 
 class ProfileEditModelForm(forms.ModelForm):
     """
-    Форма для ввода и редактирования комментария
+    Форма для редактирования профиля
     """
     profile_image = forms.ImageField(label='Фото профиля', required=False)
 
