@@ -8,7 +8,7 @@ from django.urls import reverse
 from dotenv import load_dotenv
 
 from .constant import TIMES
-from .models import *
+from .models import Service
 from .tasks import notifacation_record
 
 load_dotenv()

@@ -87,6 +87,7 @@ def profile_edit(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required(login_url="users:login")
 def service_view(request: HttpRequest) -> HttpResponse:
     """
     Отображает все услуги.
@@ -101,6 +102,7 @@ def service_view(request: HttpRequest) -> HttpResponse:
     return render(request, "service.html", context={"service": service})
 
 
+@login_required(login_url="users:login")
 def service_info(request, pk: int) -> HttpResponse:
     """
     Отображает информацию об услуге.
@@ -122,6 +124,7 @@ def service_info(request, pk: int) -> HttpResponse:
     )
 
 
+@login_required(login_url="users:login")
 def comments(request: HttpRequest) -> HttpResponse:
     """
     Отображает все комментарии.
@@ -146,6 +149,7 @@ def comments(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required(login_url="users:login")
 def comment_add(request: HttpRequest) -> HttpResponse:
     """
     Отображает форму добавления комментария и подключен celery для фильтрации матов
@@ -191,6 +195,7 @@ class CommentDeleteView(DeleteView):
     template_name_suffix = "_delete"
 
 
+@cache_page(259200)  # кэш на 3 дня
 def gallery(request: HttpRequest) -> HttpResponse:
     """
     Отображает фотогалерею

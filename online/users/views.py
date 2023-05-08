@@ -2,7 +2,8 @@ import os
 
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetView
+from django.contrib.auth.views import (PasswordResetConfirmView,
+                                       PasswordResetView)
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
