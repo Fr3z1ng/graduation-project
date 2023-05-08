@@ -119,11 +119,7 @@ def userupdate(request, id):
 
     # Only show the days that are not full:
     validateweekdays = isweekdayvalid(weekdays)
-    if delta24 is True:
-        appointment.delete()
-        return redirect(reverse("booking:user_record"))
-    else:
-        return render(request, "booking/falsedelete.html")
+
     if request.method == "POST":
         service = request.POST.get("service")
         day = request.POST.get("day")
