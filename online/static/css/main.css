@@ -963,3 +963,22 @@ input[type="text"], input[type="email"], input[type="password"] {
   text-align: center;
 }
 /* Стили для блока подтверждение регистрации django-admin */
+.container-delete {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.card-body-delete {
+  border: 1px solid #f3f3f3;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.card-text-delete {
+  margin-bottom: 20px;
+}
+
+.delete {
+  font-weight: bold;
+  margin-bottom: 20px;
+}

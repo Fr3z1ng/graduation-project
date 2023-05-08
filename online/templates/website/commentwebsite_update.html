@@ -1,6 +1,17 @@
-<form action="" method="post" >
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Submit" />
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-</form>
+<div class="container pink-bg">
+  <h3 class="text-center mb-4">Напишите ваш отзыв</h3>
+  <form method="post" class="comment-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Ваш отзыв</label>
+      {{form.text}}
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+</div>
+{% endblock %}
+{% include "footer.html" %}

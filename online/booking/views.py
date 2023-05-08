@@ -119,28 +119,29 @@ def userupdate(request, id):
 
     # Only show the days that are not full:
     validateweekdays = isweekdayvalid(weekdays)
+    if delta24 is True:
+        if request.method == "POST":
+            service = request.POST.get("service")
+            day = request.POST.get("day")
 
-    if request.method == "POST":
-        service = request.POST.get("service")
-        day = request.POST.get("day")
+            # Store day and service in django session:
+            request.session["day"] = day
+            request.session["service"] = service
 
-        # Store day and service in django session:
-        request.session["day"] = day
-        request.session["service"] = service
-
-        return redirect(reverse("booking:userUpdateSubmit", args=[id]))
-
-    return render(
-        request,
-        "booking/userUpdate.html",
-        {
-            "weekdays": weekdays,
-            "validateWeekdays": validateweekdays,
-            "delta24": delta24,
-            "id": id,
-            "services": services,
-        },
-    )
+            return redirect(reverse("booking:userUpdateSubmit", args=[id]))
+        return render(
+            request,
+            "booking/userUpdate.html",
+            {
+                "weekdays": weekdays,
+                "validateWeekdays": validateweekdays,
+                "delta24": delta24,
+                "id": id,
+                "services": services,
+            },
+        )
+    else:
+        return render(request, "booking/falsedelete.html")
 
 
 def userupdatesubmit(request, id):
@@ -239,7 +240,7 @@ def checktime(times, day):
     time = now.time()
     formatted_time = time.strftime("%H:%M")
     for k in times:
-        if k[0:5] > formatted_time and day == str(now.date()):
+        if k > formatted_time and day == str(now.date()):
             if Appointment.objects.filter(day=day, time=k).count() < 1:
                 x.append(k)
         elif day != str(now.date()):

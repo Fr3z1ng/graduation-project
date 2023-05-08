@@ -3,8 +3,8 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="shadow p-4 mb-5 bg-body bg-body rounded text-black m-5 text-center fPersian">
-    <h1 class="text-danger">Нельзя изменить время записи, в день записи, пожалуйста отпишите Мастеру!</h1>
-    <a href="{% url 'booking:user_record' %}" class="btn btn-primary mt-5">Return To Profile</a>
+    <h1 class="text-danger">Нельзя изменить или удалить время записи, в день записи, пожалуйста отпишите Мастеру!</h1>
+    <a href="{% url 'booking:user_record' %}" class="btn btn-primary mt-5">Вернуться в ваши записи</a>
 </div>
 {% endif %}
 {% endblock %}
