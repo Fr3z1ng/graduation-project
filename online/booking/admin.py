@@ -1,13 +1,23 @@
 from django.contrib import admin
-from .models import Appointment, HistoryBooking, BookingSettings
 from django.utils.html import format_html
+
+from .models import Appointment, BookingSettings, HistoryBooking
 
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'appointment_service', 'appointment_day', 'appointment_time']
-    list_filter = ('day',)
-    search_fields = ('user__username__startswith', 'service__name__startswith', 'day__exact',)
+    list_display = [
+        "user",
+        "appointment_service",
+        "appointment_day",
+        "appointment_time",
+    ]
+    list_filter = ("day",)
+    search_fields = (
+        "user__username__startswith",
+        "service__name__startswith",
+        "day__exact",
+    )
 
     @staticmethod
     def appointment_service(obj):
@@ -24,7 +34,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 @admin.register(BookingSettings)
 class BookingSettingsAdmin(admin.ModelAdmin):
-    list_display = ['start_time_booking', 'end_time_booking']
+    list_display = ["start_time_booking", "end_time_booking"]
 
     @staticmethod
     def start_time_booking(obj):
@@ -37,9 +47,13 @@ class BookingSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(HistoryBooking)
 class HistoryBookingAdmin(admin.ModelAdmin):
-    list_display = ['user', 'history_service', 'history_day', 'history_time']
-    list_filter = ('day',)
-    search_fields = ('user__username__startswith', 'service__name__startswith', 'day__exact',)
+    list_display = ["user", "history_service", "history_day", "history_time"]
+    list_filter = ("day",)
+    search_fields = (
+        "user__username__startswith",
+        "service__name__startswith",
+        "day__exact",
+    )
 
     @staticmethod
     def history_service(obj):

@@ -1,11 +1,8 @@
-from .censor import CENSOR
-from profanityfilter import ProfanityFilter
 from celery import shared_task
+from profanityfilter import ProfanityFilter
 from website.models import CommentWebsite
 
-"""
-Основные маршруты приложения website.
-"""
+from .censor import CENSOR
 
 pf = ProfanityFilter()
 

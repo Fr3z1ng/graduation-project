@@ -4,16 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0004_service_minuses_service_pros_service_service_image'),
+        ("website", "0004_service_minuses_service_pros_service_service_image"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='service',
-            name='short_description',
-            field=models.TextField(default=1, max_length=250, verbose_name='Service short description'),
+            model_name="service",
+            name="short_description",
+            field=models.TextField(
+                default=1, max_length=250, verbose_name="Service short description"
+            ),
             preserve_default=False,
         ),
     ]

@@ -4,20 +4,46 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0001_initial'),
+        ("website", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=25, verbose_name='Profile first_name')),
-                ('last_name', models.CharField(max_length=25, verbose_name='Profile last_name')),
-                ('profile_image', models.ImageField(blank=True, null=True, upload_to='profile', verbose_name='Profile Image')),
-                ('phone_number', models.CharField(max_length=20, verbose_name='Profile phone_number')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(max_length=25, verbose_name="Profile first_name"),
+                ),
+                (
+                    "last_name",
+                    models.CharField(max_length=25, verbose_name="Profile last_name"),
+                ),
+                (
+                    "profile_image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="profile",
+                        verbose_name="Profile Image",
+                    ),
+                ),
+                (
+                    "phone_number",
+                    models.CharField(
+                        max_length=20, verbose_name="Profile phone_number"
+                    ),
+                ),
             ],
         ),
     ]

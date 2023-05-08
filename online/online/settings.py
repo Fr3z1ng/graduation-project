@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ua%n1d1s(o3v)0d=%n$17&utf$@4r7g+yk_qs!&!%+#b4&42t('
+SECRET_KEY = "django-insecure-ua%n1d1s(o3v)0d=%n$17&utf$@4r7g+yk_qs!&!%+#b4&42t("
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,58 +36,58 @@ DEBUG = True
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "website.apps.WebsiteConfig",
-    'booking.apps.BookingConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_celery_beat',
-    'debug_toolbar',
+    "booking.apps.BookingConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_celery_beat",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = 'online.urls'
+ROOT_URLCONF = "online.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'online.wsgi.application'
+WSGI_APPLICATION = "online.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
     }
 }
 
@@ -96,25 +96,25 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = "ru"
 
-TIME_ZONE = 'Europe/Minsk'
+TIME_ZONE = "Europe/Minsk"
 CELERY_TIMEZONE = "Europe/Minsk"
 USE_I18N = True
 
@@ -123,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -133,25 +133,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 CELERY_BEAT_SCHEDULE = {
-    'check_appointments': {
-        'task': 'booking.tasks.check_appointments',  # Путь к задаче
-        'schedule': 60 * 60 * 24,  # Интервал в секундах (здесь - 24 часа)
+    "check_appointments": {
+        "task": "booking.tasks.check_appointments",  # Путь к задаче
+        "schedule": 60 * 60 * 24,  # Интервал в секундах (здесь - 24 часа)
     },
-    'check_time_delete': {
-        'task': 'booking.tasks.check_time_delete',  # Путь к задаче
-        'schedule': crontab(hour=18, minute=30),  # будет запускаться каждый день в 18.30
+    "check_time_delete": {
+        "task": "booking.tasks.check_time_delete",  # Путь к задаче
+        "schedule": crontab(
+            hour=18, minute=30
+        ),  # будет запускаться каждый день в 18.30
     },
 }
 
@@ -163,8 +165,6 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": "/home/fr3zing/python/graduation-project/online/cashes",
-        'OPTIONS': {
-            'MAX_ENTRIES': 1000
-        }
+        "OPTIONS": {"MAX_ENTRIES": 1000},
     }
 }

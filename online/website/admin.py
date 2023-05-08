@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Service, Profile, CommentWebsite, PhotoGallery
-from django.utils.html import format_html
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
+
+from .models import CommentWebsite, PhotoGallery, Profile, Service
 
 
 @admin.register(Service)
@@ -9,8 +9,9 @@ class ServiceAdmin(admin.ModelAdmin):
     """
     Класс, определяющий настройки административного интерфейса для модели Service.
     """
-    list_display = ['name', 'description_service', 'cost_service']
-    list_filter = ('name',)
+
+    list_display = ["name", "description_service", "cost_service"]
+    list_filter = ("name",)
 
     @staticmethod
     def description_service(obj):
@@ -32,8 +33,9 @@ class ProfileAdmin(admin.ModelAdmin):
     """
     Класс, определяющий настройки административного интерфейса для модели Profile.
     """
-    list_display = ['user', 'first_name_profile', 'last_name_profile']
-    search_fields = ('user__username__startswith',)
+
+    list_display = ["user", "first_name_profile", "last_name_profile"]
+    search_fields = ("user__username__startswith",)
 
     @staticmethod
     def first_name_profile(obj):
@@ -55,7 +57,8 @@ class CommentWebsiteAdmin(admin.ModelAdmin):
     """
     Класс, определяющий настройки административного интерфейса для модели CommentWebsite.
     """
-    list_display = ['user', 'text_comment', 'pub_date_comment', 'update_date_comment']
+
+    list_display = ["user", "text_comment", "pub_date_comment", "update_date_comment"]
 
     @staticmethod
     def text_comment(obj):
@@ -78,7 +81,7 @@ class CommentWebsiteAdmin(admin.ModelAdmin):
         """
         return format_html("<b><i>{}</i></b>", f"{obj.update_date}")
 
-    search_fields = ('user__username__startswith',)
+    search_fields = ("user__username__startswith",)
 
 
 @admin.register(PhotoGallery)
@@ -86,7 +89,8 @@ class PhotoGalleryAdmin(admin.ModelAdmin):
     """
     Класс, определяющий настройки административного интерфейса для модели PhotoGallery.
     """
-    list_display = ['id', 'name_category', 'photo_preview']
+
+    list_display = ["id", "name_category", "photo_preview"]
 
     @staticmethod
     def name_category(obj):

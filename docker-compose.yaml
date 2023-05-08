@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: postgres_django
+    image: postgres:15-alpine
+    environment:
+      - pg_data:/var/lib/postgresql/data
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  backend_admin:
+    build: .
+
+    volumes:
+      - ./:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    entrypoint: ['sh', 'entrypoint.sh']
+
+volumes:
+  pgdata: null

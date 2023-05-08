@@ -4,23 +4,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0006_commentwebsite'),
+        ("website", "0006_commentwebsite"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PhotoGallery',
+            name="PhotoGallery",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('photo_gallery', models.ImageField(blank=True, null=True, upload_to='profile', verbose_name='Photo gallery Image')),
-                ('short_description', models.TextField(max_length=250, verbose_name='Service short description')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "photo_gallery",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="profile",
+                        verbose_name="Photo gallery Image",
+                    ),
+                ),
+                (
+                    "short_description",
+                    models.TextField(
+                        max_length=250, verbose_name="Service short description"
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='service',
-            name='time',
-            field=models.CharField(default='15 минут', max_length=40, verbose_name='Time service'),
+            model_name="service",
+            name="time",
+            field=models.CharField(
+                default="15 минут", max_length=40, verbose_name="Time service"
+            ),
         ),
     ]

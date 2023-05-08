@@ -4,21 +4,49 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0007_photogallery_service_time'),
+        ("website", "0007_photogallery_service_time"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='StockShares',
+            name="StockShares",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='Stock shares name')),
-                ('description', models.TextField(max_length=1000, verbose_name='Service description')),
-                ('cost', models.IntegerField()),
-                ('service_image', models.ImageField(blank=True, null=True, upload_to='stock_shares_image', verbose_name='Stock shares Image')),
-                ('short_description', models.TextField(max_length=250, verbose_name='Service short description')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=50, verbose_name="Stock shares name"),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        max_length=1000, verbose_name="Service description"
+                    ),
+                ),
+                ("cost", models.IntegerField()),
+                (
+                    "service_image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="stock_shares_image",
+                        verbose_name="Stock shares Image",
+                    ),
+                ),
+                (
+                    "short_description",
+                    models.TextField(
+                        max_length=250, verbose_name="Service short description"
+                    ),
+                ),
             ],
         ),
     ]

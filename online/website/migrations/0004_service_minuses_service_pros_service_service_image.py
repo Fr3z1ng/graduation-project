@@ -4,27 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('website', '0003_profile_user'),
+        ("website", "0003_profile_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='service',
-            name='minuses',
-            field=models.TextField(default=1, max_length=1000, verbose_name='Service minus description'),
+            model_name="service",
+            name="minuses",
+            field=models.TextField(
+                default=1, max_length=1000, verbose_name="Service minus description"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='service',
-            name='pros',
-            field=models.TextField(default=1, max_length=1000, verbose_name='Service plus description'),
+            model_name="service",
+            name="pros",
+            field=models.TextField(
+                default=1, max_length=1000, verbose_name="Service plus description"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='service',
-            name='service_image',
-            field=models.ImageField(blank=True, null=True, upload_to='service_image', verbose_name='Service Image'),
+            model_name="service",
+            name="service_image",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="service_image",
+                verbose_name="Service Image",
+            ),
         ),
     ]

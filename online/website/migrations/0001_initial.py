@@ -4,20 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Service',
+            name="Service",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='Service name')),
-                ('description', models.TextField(max_length=1000, verbose_name='Service description')),
-                ('cost', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, verbose_name="Service name")),
+                (
+                    "description",
+                    models.TextField(
+                        max_length=1000, verbose_name="Service description"
+                    ),
+                ),
+                ("cost", models.IntegerField()),
             ],
         ),
     ]
