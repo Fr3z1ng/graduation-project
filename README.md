@@ -54,6 +54,16 @@
 ## Contributing
 Чтобы помочь в разботке или сообщить о баге отправляйте на этот гитхаб https://github.com/Fr3z1ng
 
+
+## Лицензия
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+
+## Контакты
+
+Alexander Shauro - [@linkendin](https://www.linkedin.com/in/alexander-shauro-1430b0274)
+
 ### Зачем вы разработали этот проект?
 Проект поможет мастерам в сфере красоты, использовать этот проект для записи своих клиентов.
 
