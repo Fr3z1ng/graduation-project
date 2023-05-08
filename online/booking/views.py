@@ -2,22 +2,32 @@ from datetime import time, timedelta
 
 from django.contrib import messages
 from django.db.models import Q
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from dotenv import load_dotenv
 
+from .constant import TIMES
 from .models import *
 from .tasks import notifacation_record
 
 load_dotenv()
 
 
-def booking(request):
+def booking(request: HttpRequest) -> HttpResponse:
+    """
+    Отображает страницу выбора услуги и делается запрос в БД  service для отображения услуг
+    Args:
+        request (HttpRequest): объект запроса HTTP
+
+    Returns:
+        HttpResponse: объект ответа HTTP со страницей выбора услуги
+    """
     services = Service.objects.all()
     if request.method == "POST":
         service = request.POST.get("service")
         if service is None:
-            messages.success(request, "Please Select A Service!")
+            messages.success(request, "Выберите услугу")
             return redirect(reverse("booking:booking"))
         request.session["service"] = service  # присвоение значения service в сессию
         return redirect(reverse("booking:booking_day"))
@@ -25,15 +35,26 @@ def booking(request):
     return render(request, "booking/booking.html", {"services": services})
 
 
-def booking_day(request, service_id=None):
+def booking_day(request: HttpRequest, service_id: int = None) -> HttpResponse:
+    """
+    Отображает страницу выбора дня для бронирования услуги.
+
+    Args:
+    - request: объект HttpRequest, содержащий информацию о запросе, который вызывает функцию.
+    - service_id: необязательный целочисленный параметр, содержащий идентификатор услуги, выбранной пользователем.
+
+    Return: объект HttpResponse с отображением шаблона booking/booking_day.html с контекстом,
+    содержащим список дней и информацию о том, являются ли эти дни доступными для бронирования.
+    """
     weekdays = validweekday(31)
+    services = Service.objects.all()
     validate_weekdays = isweekdayvalid(weekdays)
     if service_id is not None:
         service = Service.objects.get(id=service_id)
         request.session["service"] = service.name
     if request.method == "POST":
         day = request.POST.get("day")
-        request.session["day"] = day  # присвоение значения day в сессию
+        request.session["day"] = day
         return redirect(reverse("booking:bookingSubmit"))
 
     return render(
@@ -42,30 +63,21 @@ def booking_day(request, service_id=None):
         {
             "weekdays": weekdays,
             "validateWeekdays": validate_weekdays,
+            "services": services,
         },
     )
 
 
-def bookingsubmit(request):
-    times = [
-        "10.00",
-        "10:30",
-        "11.00",
-        "11:30",
-        "12.00",
-        "12:30",
-        "13.00",
-        "13:30",
-        "14.00",
-        "14:30",
-        "15.00",
-        "15:30",
-        "16.00",
-        "16:30",
-        "17.00",
-        "17:30",
-        "18.00",
-    ]
+def bookingsubmit(request: HttpRequest) -> HttpResponse:
+    """
+    Отображает страницу выбора времени записи для клиента
+    Args:
+        request (HttpRequest): объект запроса HTTP
+
+    Returns:
+        HttpResponse: объект ответа HTTP со временем записи для клиента
+    """
+    services = Service.objects.all()
     today = datetime.now()
     mindate = today.strftime("%Y-%m-%d")  # выбор даты с которой можно записаться
     deltatime = today + timedelta(days=31)  # кол-во дней на которые можно записываться
@@ -75,7 +87,7 @@ def bookingsubmit(request):
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
     hour = checktime(
-        times, day
+        TIMES, day
     )  # проверка забронировано ли время другим пользователем в этот день
     time = request.POST.get("time")  # получение времени
     if request.method == "POST":
@@ -97,13 +109,20 @@ def bookingsubmit(request):
     return render(
         request,
         "booking/bookingSubmit.html",
-        {
-            "times": hour,
-        },
+        {"times": hour, "services": services},
     )
 
 
-def userupdate(request, id):
+def userupdate(request: HttpRequest, id: int) -> HttpResponse:
+    """
+    Обрабатывает запрос на обновление записи клиента,клиент заново выбирает день и услугу и передает id дальше.
+
+    Args:
+    - request: объект запроса Django HttpRequest
+    - id: идентификатор записи, которую нужно обновить
+
+    Returns: HttpResponse объект, который содержит HTML-страницу с формой обновления времени и услуги.
+    """
     services = Service.objects.all()
     appointment = Appointment.objects.get(pk=id)
     userdatepicked = appointment.day
@@ -144,26 +163,17 @@ def userupdate(request, id):
         return render(request, "booking/falsedelete.html")
 
 
-def userupdatesubmit(request, id):
-    times = [
-        "10.00",
-        "10:30",
-        "11.00",
-        "11:30",
-        "12.00",
-        "12:30",
-        "13.00",
-        "13:30",
-        "14.00",
-        "14:30",
-        "15.00",
-        "15:30",
-        "16.00",
-        "16:30",
-        "17.00",
-        "17:30",
-        "18.00",
-    ]
+def userupdatesubmit(request: HttpRequest, id: int) -> HttpResponse:
+    """
+    Обрабатывает запрос на обновление записи клиента, клиент выбирает новое время записи.
+
+    Args:
+    - request: объект запроса Django HttpRequest
+    - id: идентификатор записи, которую нужно обновить
+
+    Returns: HttpResponse объект, который содержит HTML-страницу с формой обновления времени записи.
+    """
+    services = Service.objects.all()
     today = datetime.now()
     mindate = today.strftime("%Y-%m-%d")
     deltatime = today + timedelta(days=21)
@@ -172,7 +182,7 @@ def userupdatesubmit(request, id):
     day = request.session.get("day")
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
-    hour = checktime(times, day)
+    hour = checktime(TIMES, day)
     appointment = Appointment.objects.get(pk=id)
     userselectedtime = appointment.time
     if request.method == "POST":
@@ -199,17 +209,21 @@ def userupdatesubmit(request, id):
         {
             "times": hour,
             "id": id,
+            "services": services,
         },
     )
 
 
-def daytoweekday(x):
-    z = datetime.strptime(x, "%Y-%m-%d")
-    y = z.strftime("%A")
-    return y
+def validweekday(days: int) -> list:
+    """
+    Возвращает список дат, на которые можно записаться на прием в течение следующих дней.
 
+    Args:
+    - days (int): количество дней, на которые нужно вернуть список дат.
 
-def validweekday(days):
+    Returns:
+    - weekdays : список дат в формате 'YYYY-MM-DD'.
+    """
     today = datetime.now()  # получение текущей даты
     weekdays = []  # пустой список для хранения для недели
     booking_settings = BookingSettings.objects.all()
@@ -219,13 +233,20 @@ def validweekday(days):
             start_time = datetime.combine(setting.start_time, time.min)
             end_time = datetime.combine(setting.end_time, time.max)
             if start_time <= x <= end_time:
-                weekdays.append(
-                    x.strftime("%Y-%m-%d")
-                )  # если удовлетворяет условие добавляем этот день в список
+                weekdays.append(x.strftime("%Y-%m-%d"))
     return weekdays
 
 
-def isweekdayvalid(x):
+def isweekdayvalid(x: list) -> list:
+    """
+    Возвращает список дат из списка x, на которые количество записей не превышает 10.
+
+    Args:
+    x (list): Список дат в формате YYYY-MM-DD.
+
+    Returns:
+    list: Список дат в формате YYYY-MM-DD, на которые количество записей не превышает 10.
+    """
     validateweekdays = []
     for j in x:
         if Appointment.objects.filter(day=j).count() < 10:  # кол-во записей на день
@@ -233,8 +254,17 @@ def isweekdayvalid(x):
     return validateweekdays
 
 
-def checktime(times, day):
-    # Only show the time of the day that has not been selected before:
+def checktime(times: list, day: str) -> list:
+    """
+    Возвращает список доступный диапазон времени записи на сегодняшний день
+
+    Args:
+        times (list): Список всех возможных временных рамок.
+        day (str): Строка с датой в формате 'YYYY-MM-DD'.
+
+    Returns:
+        list: Возвращает список доступный диапазон времени записи на сегодняшний день
+    """
     x = []
     now = datetime.now()
     time = now.time()
@@ -249,7 +279,19 @@ def checktime(times, day):
     return x
 
 
-def remove(request, id):
+def remove(request: HttpRequest, id: int) -> HttpResponse:
+    """
+    Удаляет запись на приём по переданному id.
+
+    Args:
+        request: объект запроса.
+        id (int): id удаляемой записи.
+
+    Returns:
+        Если удаление прошло успешно, то происходит перенаправление на страницу
+        со списком записей пользователя, иначе отображается страница с сообщением
+        об ошибке удаления.
+    """
     appointment = Appointment.objects.get(pk=id)
     userdatepicked = appointment.day
     today = datetime.today()
@@ -263,7 +305,16 @@ def remove(request, id):
         return render(request, "booking/falsedelete.html")
 
 
-def record_view(request):
+def record_view(request: HttpRequest) -> HttpResponse:
+    """
+    Функция обработки запроса на отображение страницы со списком записей пользователя.
+
+    Args:
+        request: объект запроса HttpRequest.
+
+    Returns:
+        Объект ответа HttpResponse с отображением страницы со списком записей пользователя.
+    """
     service = Service.objects.all()
     now = datetime.now()
     appointments = Appointment.objects.filter(user=request.user).order_by("day", "time")
@@ -289,11 +340,16 @@ def record_view(request):
     )
 
 
-def history_user(request):
+def history_user(request: HttpRequest) -> HttpResponse:
     """
-    Представление для конкретной услуги
-    """
+    Возвращает страницу с историей бронирования для пользователя.
 
+    Args:
+        request: объект запроса HttpRequest.
+
+    Returns:
+        Объект ответа HttpResponse с отображением страницы с историей бронирования пользователя
+    """
     service = Service.objects.all()
     history_booking = HistoryBooking.objects.filter(user=request.user).order_by(
         "day", "time"

@@ -8,7 +8,7 @@ pf = ProfanityFilter()
 
 
 @shared_task()
-def replace_text_with_censored(comment_id):
+def replace_text_with_censored(comment_id: int):
     """
     Делает фильтрацию матных слов в отзывах
 

@@ -12,8 +12,7 @@ from .tasks import replace_text_with_censored
 
 def index(request: HttpRequest) -> HttpResponse:
     """
-    Отображает главную страницу
-
+    Отображает главную страницу и делается запрос в БД для получения услуг service
     Args:
         request (HttpRequest): объект запроса HTTP
 
@@ -28,7 +27,8 @@ def index(request: HttpRequest) -> HttpResponse:
 def profile(request: HttpRequest) -> HttpResponse:
     """
     Отображает профиль пользователя и форму для заполнения профиля если это требуется.
-
+    Делается запрос в БД service для отображения услуг в шапке header и profile_all для получения всех
+    всех данных пользователя
     Args:
         request (HttpRequest): объект запроса HTTP
 
@@ -61,7 +61,8 @@ def profile(request: HttpRequest) -> HttpResponse:
 def profile_edit(request: HttpRequest) -> HttpResponse:
     """
     Отображает страницу с формой для изменения профиля.
-
+    Делается запрос в БД service для отображения услуг в шапке header и получения instance делается запрос в
+    profile_user в БД
     Args:
         request (HttpRequest): объект запроса HTTP
 
@@ -89,7 +90,7 @@ def profile_edit(request: HttpRequest) -> HttpResponse:
 def service_view(request: HttpRequest) -> HttpResponse:
     """
     Отображает все услуги.
-
+    Делается запрос в БД service для отображения услуг
     Args:
         request (HttpRequest): объект запроса HTTP
 
@@ -147,7 +148,7 @@ def comments(request: HttpRequest) -> HttpResponse:
 
 def comment_add(request: HttpRequest) -> HttpResponse:
     """
-    Отображает форму добавления комментария
+    Отображает форму добавления комментария и подключен celery для фильтрации матов
 
     Args:
         request (HttpRequest): объект запроса HTTP
@@ -202,6 +203,9 @@ def gallery(request: HttpRequest) -> HttpResponse:
     """
     service = Service.objects.all()
     photo = PhotoGallery.objects.all()
+    # код блока ниже для чего, добавляется дефиз, потому что в photogallery.html
+    # есть data-filter, который не хочет высвечивать определенные фото с пробелом
+    # поэтому приходится добавлять везде дефиз
     for i in photo:
         i.category.name = i.category.name.replace(" ", "-")
     photo_illu = PhotoGallery.objects.all()
@@ -216,6 +220,6 @@ def gallery(request: HttpRequest) -> HttpResponse:
     photo_illu = new_photo_illu
     return render(
         request,
-        "Photogallery.html",
+        "photogallery.html",
         context={"gallery": photo, "service": service, "gallery_illu": photo_illu},
     )

@@ -27,6 +27,10 @@ TIME_CHOICES = (
 
 
 class Appointment(models.Model):
+    """
+    Модель записи времени
+    """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(
         Service, on_delete=models.CASCADE, null=True, blank=True
@@ -37,6 +41,10 @@ class Appointment(models.Model):
 
 
 class HistoryBooking(models.Model):
+    """
+    Модель истории записи
+    """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(
         Service, on_delete=models.CASCADE, null=True, blank=True
@@ -51,9 +59,17 @@ class HistoryBooking(models.Model):
 
 
 class BookingSettings(models.Model):
+    """
+    Модель выбора времени работ мастера
+    """
+
     start_time = models.DateField(default=datetime.now)
     end_time = models.DateField()
 
     def clean(self):
+        """
+        Валидация на правильный выбор данных
+        """
+
         if self.start_time >= self.end_time:
-            raise ValidationError("Start time should be earlier than end time")
+            raise ValidationError("Start_time не должен быть равен или больше End_time")

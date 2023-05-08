@@ -9,7 +9,7 @@
             </div>
         <div class="portfolio-menu mt-2 mb-4">
             <ul>
-                <li class="btn btn-outline-dark active" data-filter="*">All</li>
+                <li class="btn btn-outline-dark active" data-filter="*">Все</li>
                 {% for photo in gallery_illu %}
                 <li class="btn btn-outline-dark" data-filter=".{{ photo.category.name }}">{{ photo.category.name }}</li>
                 {% endfor %}
@@ -49,11 +49,6 @@ enabled : true
 }
 });
 });
-
-
-
-
-
     </script>
 </main>
 {% endblock %}
