@@ -982,3 +982,7 @@ input[type="text"], input[type="email"], input[type="password"] {
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+i.fa.fa-cart-arrow-down {
+  font-size: 16px;
+}

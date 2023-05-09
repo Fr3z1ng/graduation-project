@@ -12,6 +12,7 @@ urlpatterns = [
     path("profile", views.profile, name="profile"),
     path("profile_edit", views.profile_edit, name="profile_edit"),
     path("service", views.service_view, name="service"),
+    path("contact", views.contact, name="contact"),
     path("service/<int:pk>", views.service_info, name="service_info"),
     path("comment", views.comments, name="comment"),
     path("comment_add", views.comment_add, name="comment_add"),

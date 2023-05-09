@@ -20,7 +20,30 @@ services:
       - 8000:8000
     depends_on:
       - db
-    entrypoint: ['sh', 'entrypoint.sh']
+    entrypoint: [ 'sh', 'entrypoint.sh' ]
+
+  redis:
+    restart: always
+    image: "redis:alpine"
+    container_name: "redis"
+    ports:
+      - "6379:6380"
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: bash -c "cd online && celery -A online worker -l info"
+    depends_on:
+      - redis
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    command: bash -c "cd online && celery -A online  beat -l info"
+    depends_on:
+      - redis
+      - celery
 
 volumes:
   pgdata: null

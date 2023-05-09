@@ -3,11 +3,11 @@
 
 {% block content %}
 <div class="login">
-    <h2>Register</h2>
+    <h2>Регистрация</h2>
     <form method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Register" class="btn-login btn-primary">
+        <input type="submit" value="Зарегистрироваться" class="btn-login btn-primary">
         <input type="hidden" name="next" value="{{ request.GET.next }}">
     </form>
 

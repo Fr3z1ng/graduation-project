@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Контакты</h2>
+            <li><a href="https://www.google.com/maps?q=Минск+Пушкина+1">Минск, ул. Пушкина, 1</a></li>
+            <li>пн-пт: 10:00 - 18:00</li>
+            <li>без перерыва</li>
+            <li><a href="tel:5551234567">555 123-45-67</a></li>
+            <li><a href="tel:5551234568">555 123-45-68</a></li>
+            <li><a href="tel:5551234569">555 123-45-69</a></li>
+            <li><i class="fa fa-cart-arrow-down" aria-hidden="true" font-size="16px" ></i>  Оплата: наличными </li>
+        </div>
+    </div>
+    <hr>
+</div>
+{% endblock %}
+
+{% include "footer.html" %}

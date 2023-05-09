@@ -228,3 +228,16 @@ def gallery(request: HttpRequest) -> HttpResponse:
         "photogallery.html",
         context={"gallery": photo, "service": service, "gallery_illu": photo_illu},
     )
+
+
+def contact(request: HttpRequest) -> HttpResponse:
+    """
+    Отображает страницу контакты и делается запрос в БД для получения услуг service
+    Args:
+        request (HttpRequest): объект запроса HTTP
+
+    Returns:
+        HttpResponse: объект ответа HTTP страница контакты
+    """
+    service = Service.objects.all()
+    return render(request, "contact.html", context={"service": service})
