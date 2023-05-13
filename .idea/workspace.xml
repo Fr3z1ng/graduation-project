@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1412c63-942c-4b3f-8360-7bbe04b13f45" name="Changes" comment="- исправил ошибки с git">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="a1412c63-942c-4b3f-8360-7bbe04b13f45" name="Changes" comment="-добавил Dockerfile и docker-compose &#10;-сделал endpoint contact">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/03e9b9f49e85525e9784cd4fa647ef95.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/0d6a852d768b05698af699a551508d9c.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/1d8382b92bca78b6a711be9ea4a11567.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/4877e20a2450cfe5ace64de8472b1eb3.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/976a8b13e4df47f29a618e7402510925.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/cashes/d7f4f016dbb311f4f206664397fe414e.djcache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/online/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/online/online/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +44,7 @@
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/fr3zing/python/graduation-project/online/static/css&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fr3zing/python/graduation-project&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
@@ -50,28 +58,7 @@
       <recent name="$PROJECT_DIR$/online/templates/widgets" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.123">
-    <configuration name="123" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="graduation-project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/online/booking" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/online/booking/123.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Docker.docker-compose.yaml.celery: Compose Deployment">
     <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
       <deployment type="dockerfile">
         <settings>
@@ -100,11 +87,52 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yaml.backend_admin: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="backend_admin" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yaml.celery: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="celery" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yaml.redis: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="redis" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yaml.celery: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yaml: Compose Deployment" />
         <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="Python.123" />
+        <item itemvalue="Docker.docker-compose.yaml.redis: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yaml.backend_admin: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -257,7 +285,35 @@
       <option name="project" value="LOCAL" />
       <updated>1683534439048</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="- обновил стилизацию форму удаления и редактирования отзыва">
+      <created>1683537273674</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683537273674</updated>
+    </task>
+    <task id="LOCAL-00022" summary="- сделал аннотации и docstring приложения booking и обновил модели">
+      <created>1683541879332</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1683541879332</updated>
+    </task>
+    <task id="LOCAL-00023" summary="- Добавил ограничения для незарегистрированного пользователя&#10;- Добавил что зарегистрированный пользователь не может снова перейти на url login">
+      <created>1683551144274</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1683551144274</updated>
+    </task>
+    <task id="LOCAL-00024" summary="-добавил Dockerfile и docker-compose &#10;-сделал endpoint contact">
+      <created>1683645383002</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1683645383002</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -280,6 +336,10 @@
     <MESSAGE value="- сделал аннотацию website.views,немного подредактировал модели и обновил admin панель django" />
     <MESSAGE value="- сделал аннотацию и docstring app website,&#10;- пофиксил баг с синхронизацией времени Celery" />
     <MESSAGE value="- исправил ошибки с git" />
-    <option name="LAST_COMMIT_MESSAGE" value="- исправил ошибки с git" />
+    <MESSAGE value="- обновил стилизацию форму удаления и редактирования отзыва" />
+    <MESSAGE value="- сделал аннотации и docstring приложения booking и обновил модели" />
+    <MESSAGE value="- Добавил ограничения для незарегистрированного пользователя&#10;- Добавил что зарегистрированный пользователь не может снова перейти на url login" />
+    <MESSAGE value="-добавил Dockerfile и docker-compose &#10;-сделал endpoint contact" />
+    <option name="LAST_COMMIT_MESSAGE" value="-добавил Dockerfile и docker-compose &#10;-сделал endpoint contact" />
   </component>
 </project>

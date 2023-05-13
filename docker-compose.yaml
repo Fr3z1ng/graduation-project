@@ -31,6 +31,8 @@ services:
 
   celery:
     restart: always
+    env_file:
+      - .env
     build:
       context: .
     command: bash -c "cd online && celery -A online worker -l info"

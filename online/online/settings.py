@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-ua%n1d1s(o3v)0d=%n$17&utf$@4r7g+yk_qs!&!%+#b4&42t(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['0.0.0.0', '*']
+ALLOWED_HOSTS = ['0.0.0.0', '*']
 
 # Application definition
 
@@ -142,8 +142,8 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 CELERY_BEAT_SCHEDULE = {
     "check_appointments": {
