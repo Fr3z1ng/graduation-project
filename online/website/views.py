@@ -37,16 +37,11 @@ def profile(request: HttpRequest) -> HttpResponse:
     """
     service = Service.objects.all()
     profile_all = Profile.objects.filter(user=request.user.id)
-    prof = Profile()
     if request.method == "POST":
         form = ProfileModelForm(request.POST, request.FILES)
         if form.is_valid():
-            prof.first_name = form.cleaned_data["first_name"]
-            prof.last_name = form.cleaned_data["last_name"]
-            prof.phone_number = form.cleaned_data["phone_number"]
-            prof.profile_image = form.cleaned_data["profile_image"]
-            prof.user = request.user
-            prof.save()
+            form.instance.user = request.user
+            form.save()
             return redirect(reverse("website:profile"))
     else:
         form = ProfileModelForm()
@@ -211,22 +206,20 @@ def gallery(request: HttpRequest) -> HttpResponse:
     # код блока ниже для чего, добавляется дефиз, потому что в photogallery.html
     # есть data-filter, который не хочет высвечивать определенные фото с пробелом
     # поэтому приходится добавлять везде дефиз
-    for i in photo:
-        i.category.name = i.category.name.replace(" ", "-")
     photo_illu = PhotoGallery.objects.all()
     category_names = set()
     new_photo_illu = []
     for i in photo_illu:
-        category_name = i.category.name.replace(" ", "-")
+        category_name = i.category.slug
         if category_name not in category_names:
             category_names.add(category_name)
-            i.category.name = category_name
+            i.category.slug = category_name
             new_photo_illu.append(i)
     photo_illu = new_photo_illu
     return render(
         request,
         "photogallery.html",
-        context={"gallery": photo, "service": service, "gallery_illu": photo_illu},
+        context={"service": service, "gallery": photo_illu, "gallery_image": photo},
     )
 
 

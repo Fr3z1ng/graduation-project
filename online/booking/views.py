@@ -81,8 +81,7 @@ def bookingsubmit(request: HttpRequest) -> HttpResponse:
     today = datetime.now()
     mindate = today.strftime("%Y-%m-%d")  # выбор даты с которой можно записаться
     deltatime = today + timedelta(days=31)  # кол-во дней на которые можно записываться
-    strdeltatime = deltatime.strftime("%Y-%m-%d")
-    maxdate = strdeltatime  # самая дальняя запись
+    maxdate = deltatime.strftime("%Y-%m-%d")
     day = request.session.get("day")
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
@@ -90,22 +89,24 @@ def bookingsubmit(request: HttpRequest) -> HttpResponse:
         TIMES, day
     )  # проверка забронировано ли время другим пользователем в этот день
     time = request.POST.get("time")  # получение времени
-    if request.method == "POST":
-        if maxdate >= day >= mindate:
-            if (
-                Appointment.objects.filter(day=day, time=time).count() < 1
-                and Appointment.objects.filter(day=day).count() < 11
-            ):
-                record = Appointment.objects.get_or_create(
-                    user=request.user,
-                    service=service,
-                    day=day,
-                    time=time,
-                )
-                appoint_id = record[0].id
-                notifacation_record.delay(appoint_id)
-                messages.success(request, "Appointment already exists!")
-                return redirect("booking:user_record")
+    if (
+        request.method == "POST"
+        and maxdate >= day >= mindate
+        and (
+            Appointment.objects.filter(day=day, time=time).count() < 1
+            and Appointment.objects.filter(day=day).count() < 11
+        )
+    ):
+        record = Appointment.objects.get_or_create(
+            user=request.user,
+            service=service,
+            day=day,
+            time=time,
+        )
+        appoint_id = record[0].id
+        notifacation_record.delay(appoint_id)
+        messages.success(request, "Appointment already exists!")
+        return redirect("booking:user_record")
     return render(
         request,
         "booking/bookingSubmit.html",
@@ -177,8 +178,7 @@ def userupdatesubmit(request: HttpRequest, id: int) -> HttpResponse:
     today = datetime.now()
     mindate = today.strftime("%Y-%m-%d")
     deltatime = today + timedelta(days=21)
-    strdeltatime = deltatime.strftime("%Y-%m-%d")
-    maxdate = strdeltatime
+    maxdate = deltatime.strftime("%Y-%m-%d")
     day = request.session.get("day")
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
@@ -227,7 +227,7 @@ def validweekday(days: int) -> list:
     today = datetime.now()  # получение текущей даты
     weekdays = []  # пустой список для хранения для недели
     booking_settings = BookingSettings.objects.all()
-    for i in range(0, days):
+    for i in range(days):
         for setting in booking_settings:
             x = today + timedelta(days=i)
             start_time = datetime.combine(setting.start_time, time.min)

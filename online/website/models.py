@@ -22,6 +22,9 @@ class Service(models.Model):
     time = models.CharField(
         max_length=40, verbose_name="Длительность услуги", default="15 минут"
     )
+    slug = models.CharField(
+        max_length=50, verbose_name="Сокращенное название услуги", default=""
+    )
 
     def __str__(self):
         """
@@ -90,22 +93,3 @@ class PhotoGallery(models.Model):
         indexes = [
             models.Index(fields=["photo_gallery"], name="website_photo_gallery-index"),
         ]
-
-
-class StockShares(models.Model):
-    """
-    Модель для акций
-    """
-
-    name = models.CharField(max_length=50, verbose_name="Stock shares name")
-    description = models.TextField(max_length=1000, verbose_name="Service description")
-    cost = models.IntegerField()
-    service_image = models.ImageField(
-        upload_to="stock_shares_image",
-        blank=True,
-        null=True,
-        verbose_name="Stock shares Image",
-    )
-    short_description = models.TextField(
-        max_length=250, verbose_name="Service short description"
-    )
