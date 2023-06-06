@@ -10,14 +10,14 @@
         <div class="portfolio-menu mt-2 mb-4">
             <ul>
                 <li class="btn btn-outline-dark active" data-filter="*">Все</li>
-                {% for photo in gallery_illu %}
-                <li class="btn btn-outline-dark" data-filter=".{{ photo.category.name }}">{{ photo.category.name }}</li>
+                {% for photo in gallery %}
+                <li class="btn btn-outline-dark" data-filter=".{{ photo.category.slug }}">{{ photo.category.slug }}</li>
                 {% endfor %}
             </ul>
         </div>
         <div class="portfolio-item row">
-            {% for photo in gallery %}
-            <div class="item {{photo.category.name}} col-lg-3 col-md-4 col-6 col-sm">
+            {% for photo in gallery_image %}
+            <div class="item {{photo.category.slug}} col-lg-3 col-md-4 col-6 col-sm">
                 <a href="{{photo.photo_gallery.url}}"
                    class="fancylight popup-btn" data-fancybox-group="light">
                     <img class="img-fluid"
