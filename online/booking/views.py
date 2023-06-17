@@ -78,10 +78,6 @@ def bookingsubmit(request: HttpRequest) -> HttpResponse:
         HttpResponse: объект ответа HTTP со временем записи для клиента
     """
     services = Service.objects.all()
-    today = datetime.now()
-    mindate = today.strftime("%Y-%m-%d")  # выбор даты с которой можно записаться
-    deltatime = today + timedelta(days=31)  # кол-во дней на которые можно записываться
-    maxdate = deltatime.strftime("%Y-%m-%d")
     day = request.session.get("day")
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
@@ -90,12 +86,11 @@ def bookingsubmit(request: HttpRequest) -> HttpResponse:
     )  # проверка забронировано ли время другим пользователем в этот день
     time = request.POST.get("time")  # получение времени
     if (
-        request.method == "POST"
-        and maxdate >= day >= mindate
-        and (
+            request.method == "POST"
+            and (
             Appointment.objects.filter(day=day, time=time).count() < 1
             and Appointment.objects.filter(day=day).count() < 11
-        )
+    )
     ):
         record = Appointment.objects.get_or_create(
             user=request.user,
@@ -132,7 +127,7 @@ def userupdate(request: HttpRequest, id: int) -> HttpResponse:
 
     # 24h if statement in template:
     delta24 = userdatepicked.strftime("%Y-%m-%d") >= (
-        today + timedelta(days=1)
+            today + timedelta(days=1)
     ).strftime("%Y-%m-%d")
     # Calling 'validWeekday' Function to Loop days you want in the next 21 days:
     weekdays = validweekday(31)
@@ -175,10 +170,6 @@ def userupdatesubmit(request: HttpRequest, id: int) -> HttpResponse:
     Returns: HttpResponse объект, который содержит HTML-страницу с формой обновления времени записи.
     """
     services = Service.objects.all()
-    today = datetime.now()
-    mindate = today.strftime("%Y-%m-%d")
-    deltatime = today + timedelta(days=21)
-    maxdate = deltatime.strftime("%Y-%m-%d")
     day = request.session.get("day")
     service_name = request.session.get("service")
     service = Service.objects.get(name=service_name) if service_name else None
@@ -187,13 +178,10 @@ def userupdatesubmit(request: HttpRequest, id: int) -> HttpResponse:
     userselectedtime = appointment.time
     if request.method == "POST":
         time = request.POST.get("time")
-        if (
-            maxdate >= day >= mindate
-            or Appointment.objects.filter(day=day).count() < 11
-        ):
+        if Appointment.objects.filter(day=day).count() < 11:
             if (
-                Appointment.objects.filter(day=day, time=time).count() < 1
-                or userselectedtime == time
+                    Appointment.objects.filter(day=day, time=time).count() < 1
+                    or userselectedtime == time
             ):
                 Appointment.objects.filter(pk=id).update(
                     user=request.user,
@@ -296,7 +284,7 @@ def remove(request: HttpRequest, id: int) -> HttpResponse:
     userdatepicked = appointment.day
     today = datetime.today()
     delta24 = userdatepicked.strftime("%Y-%m-%d") >= (
-        today + timedelta(days=1)
+            today + timedelta(days=1)
     ).strftime("%Y-%m-%d")
     if delta24 is True:
         appointment.delete()
